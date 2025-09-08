@@ -1,0 +1,88 @@
+body{
+  margin:0; height:100vh; display:flex; justify-content:center; align-items:center;
+  background:#111;
+  font-family:"Vazirmatn",sans-serif;
+  color:#fff;
+}
+.safe{
+  position:relative;
+  width:400px;
+}
+.safe img{
+  width:100%;
+  display:block;
+}
+
+.hotspot{
+  position:absolute;
+  top:56%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:120px; height:120px;
+  border-radius:50%;
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+.hotspot::after{
+  content:"?";
+  font-size:36px;
+  color:#fff;
+  text-shadow:0 0 8px rgba(0,0,0,0.7);
+}
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+.overlay.show{ display:flex; }
+.panel{
+  background:#222; padding:20px; border-radius:10px; text-align:center;
+  width:260px;
+  box-shadow:0 0 20px rgba(0,0,0,.6);
+  transition:transform 0.2s;
+}
+.panel h3{margin:0 0 15px;}
+.dots{
+  display:flex; gap:10px; justify-content:center; margin:15px 0;
+}
+.dot{
+  width:14px; height:14px; border-radius:50%; background:#555;
+}
+.dot.filled{ background:lime; }
+.keys{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+}
+.key{
+  background:#444; border:none; border-radius:8px; color:#fff; font-size:18px;
+  padding:15px; cursor:pointer;
+}
+.key:hover{ background:#666; }
+.message{
+  margin-top:15px;
+  font-weight:bold;
+  color:#9f9;
+  display:none;
+}
+#close{
+  margin-top:15px;
+  background:#900;
+  padding:8px 12px;
+  border:none;
+  border-radius:6px;
+  color:#fff;
+  cursor:pointer;
+}
+
+/* انیمیشن لرزش */
+.shake {
+  animation: shake 0.3s;
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
