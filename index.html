@@ -13,14 +13,13 @@
   }
   .safe{
     position:relative;
-    width:400px; /* اندازه گاوصندوق */
+    width:400px;
   }
   .safe img{
     width:100%;
     display:block;
   }
 
-  /* ناحیه هاور */
   .hotspot{
     position:absolute;
     top:56%;
@@ -31,7 +30,6 @@
     cursor:pointer;
     display:flex; align-items:center; justify-content:center;
   }
-  /* علامت سؤال */
   .hotspot::after{
     content:"?";
     font-size:36px;
@@ -39,7 +37,6 @@
     text-shadow:0 0 8px rgba(0,0,0,0.7);
   }
 
-  /* صفحه رمز */
   .overlay{
     position:fixed;
     inset:0;
@@ -53,6 +50,7 @@
     background:#222; padding:20px; border-radius:10px; text-align:center;
     width:260px;
     box-shadow:0 0 20px rgba(0,0,0,.6);
+    transition:transform 0.2s;
   }
   .panel h3{margin:0 0 15px;}
   .dots{
@@ -76,6 +74,25 @@
     color:#9f9;
     display:none;
   }
+  #close{
+    margin-top:15px;
+    background:#900;
+    padding:8px 12px;
+    border:none;
+    border-radius:6px;
+    color:#fff;
+    cursor:pointer;
+  }
+
+  /* انیمیشن لرزش */
+  .shake {
+    animation: shake 0.3s;
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
 </style>
 </head>
 <body>
@@ -85,7 +102,7 @@
   </div>
 
   <div class="overlay" id="overlay">
-    <div class="panel">
+    <div class="panel" id="panel">
       <h3>رمز ۴ رقمی را وارد کنید</h3>
       <div class="dots">
         <div class="dot"></div>
@@ -108,6 +125,7 @@
         <button class="key" id="clear">⌫</button>
       </div>
       <div class="message" id="msg">پاکتی داخل گاوصندوق هست، رو باز کنید ✅</div>
+      <button id="close">بستن</button>
     </div>
   </div>
 
@@ -118,34 +136,56 @@ const overlay = document.getElementById("overlay");
 const hotspot = document.getElementById("hotspot");
 const dots = document.querySelectorAll(".dot");
 const msg = document.getElementById("msg");
+const panel = document.getElementById("panel");
 
-let clicked = false; // پرچم کلیک
+let activated = false; // پرچم برای فعال‌سازی با کلیک
 
 function render(){
   dots.forEach((d,i)=> d.classList.toggle("filled", i<input.length));
 }
-function reset(){ input=""; render(); msg.style.display="none"; }
+function reset(){ 
+  input=""; 
+  render(); 
+  msg.style.display="none"; 
+}
 function check(){
   if(input===CORRECT){
     msg.style.display="block";
   } else {
+    panel.classList.add("shake");
+    setTimeout(()=> panel.classList.remove("shake"), 300);
     input=""; render();
   }
 }
 
-// کلیک روی علامت سوال فعال می‌کنه حالت هاور
+// کلیک → فعال‌سازی
 hotspot.addEventListener("click", ()=>{
-  clicked = true;
+  activated = true;
 });
 
-// هاور فقط وقتی که کلیک شده اجرا میشه
+// هاور فقط وقتی کلیک شده
 hotspot.addEventListener("mouseenter", ()=>{
-  if(clicked){
+  if(activated){
     overlay.classList.add("show");
     reset();
   }
 });
 
+// بستن با کلیک بیرون
+overlay.addEventListener("click",(e)=>{
+  if(e.target===overlay){ 
+    overlay.classList.remove("show"); 
+    activated = false; // دوباره غیرفعال میشه
+  }
+});
+
+// بستن با دکمه
+document.getElementById("close").addEventListener("click",()=>{
+  overlay.classList.remove("show");
+  activated = false;
+});
+
+// صفحه کلید
 document.querySelectorAll(".key").forEach(k=>{
   k.addEventListener("click",()=>{
     if(k.id==="clear"){ input=input.slice(0,-1); render(); return; }
@@ -154,10 +194,6 @@ document.querySelectorAll(".key").forEach(k=>{
     render();
     if(input.length===4){ check(); }
   });
-});
-
-overlay.addEventListener("click",(e)=>{
-  if(e.target===overlay){ overlay.classList.remove("show"); }
 });
 </script>
 </body>
