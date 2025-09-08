@@ -20,15 +20,23 @@
     display:block;
   }
 
-  /* ناحیه هاور روی صفحه‌کلید گاوصندوق */
+  /* ناحیه هاور */
   .hotspot{
     position:absolute;
-    top:61%;   /* محل عمودی دقیق روی عکس */
-    left:50%;  /* وسط افقی */
+    top:56%;   /* کمی بالاتر از قبل (۶۱٪ بود) */
+    left:50%;
     transform:translate(-50%,-50%);
-    width:120px; height:120px; /* اندازه دایره کیپد */
+    width:120px; height:120px;
     border-radius:50%;
     cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  /* علامت سؤال */
+  .hotspot::after{
+    content:"?";
+    font-size:36px;
+    color:#fff;
+    text-shadow:0 0 8px rgba(0,0,0,0.7);
   }
 
   /* صفحه رمز */
@@ -72,7 +80,7 @@
 </head>
 <body>
   <div class="safe">
-    <!-- عکس گاوصندوقت رو به اسم safe.jpg بذار کنار این فایل -->
+    <!-- عکس گاوصندوقت -->
     <img src="safe.jpg" alt="گاوصندوق">
     <div class="hotspot" id="hotspot"></div>
   </div>
