@@ -130,6 +130,14 @@
       display: none;
       font-size: 14px;
     }
+    .error {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #ff3333;
+      text-shadow: 0 0 8px rgba(255, 51, 51, 0.5);
+      display: none;
+      font-size: 14px;
+    }
     #close {
       margin-top: 20px;
       background: linear-gradient(145deg, #900, #700);
@@ -153,7 +161,8 @@
       animation: shake 0.3s;
     }
     @keyframes shake {
-      0%, 100% { transform: translateX(0); }
+
+0%, 100% { transform: translateX(0); }
       25% { transform: translateX(-8px); }
       75% { transform: translateX(8px); }
     }
@@ -161,10 +170,7 @@
 </head>
 <body>
   <div class="safe">
-    <img src="safe.
-
-
-jpg" alt="گاوصندوق">
+    <img src="safe.jpg" alt="گاوصندوق">
     <div class="hotspot" id="hotspot"></div>
     <div class="overlay" id="overlay">
       <div class="panel" id="panel">
@@ -182,6 +188,7 @@ jpg" alt="گاوصندوق">
           <canvas class="pattern-canvas" id="pattern-canvas"></canvas>
         </div>
         <div class="message" id="msg">پاکتی داخل گاوصندوق هست، رو باز کنید ✅</div>
+        <div class="error" id="error">الگوی اشتباه است! دوباره امتحان کنید.</div>
         <button id="close">بستن</button>
       </div>
     </div>
@@ -198,6 +205,7 @@ jpg" alt="گاوصندوق">
     const panel = document.getElementById("panel");
     const closeBtn = document.getElementById("close");
     const msg = document.getElementById("msg");
+    const error = document.getElementById("error");
     const patternLock = document.getElementById("pattern-lock");
     const patternDots = document.querySelectorAll(".pattern-dot");
     const canvas = document.getElementById("pattern-canvas");
@@ -207,21 +215,30 @@ jpg" alt="گاوصندوق">
     let panelOpened = false;
 
     // تنظیم اندازه canvas
-    canvas.width = patternLock.offsetWidth;
-    canvas.height = patternLock.offsetHeight;
+    function resizeCanvas() {
+      canvas.width = patternLock.offsetWidth;
+      canvas.height = patternLock.offsetHeight;
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // پاک کردن canvas
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
 
     function reset() {
       inputPattern = [];
       patternDots.forEach(dot => dot.classList.remove("selected"));
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       msg.style.display = "none";
+      error.style.display = "none";
     }
 
     function check() {
       const input = inputPattern.join("");
+      console.log("الگوی واردشده:", input); // برای دیباگ
       if (input === CORRECT_PATTERN) {
         msg.style.display = "block";
+        error.style.display = "none";
       } else {
+        error.style.display = "block";
         panel.classList.add("shake");
         setTimeout(() => panel.classList.remove("shake"), 300);
         reset();
@@ -268,7 +285,9 @@ jpg" alt="گاوصندوق">
         isDrawing = true;
         reset();
         const dot = e.target;
-        const id = dot.getAttribute("data-id");
+
+خواهری, [9/8/2025 8:22 PM]
+const id = dot.getAttribute("data-id");
         inputPattern.push(id);
         dot.classList.add("selected");
         lastPoint = getDotPosition(dot);
@@ -290,9 +309,7 @@ jpg" alt="گاوصندوق">
 
     patternLock.addEventListener("mouseup", () => {
       if (isDrawing) {
-
-
-isDrawing = false;
+        isDrawing = false;
         check();
       }
     });
