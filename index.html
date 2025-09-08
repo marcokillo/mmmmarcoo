@@ -144,7 +144,8 @@ const dots = document.querySelectorAll(".dot");
 const msg = document.getElementById("msg");
 const panel = document.getElementById("panel");
 
-let activated = false; // فقط بعد از کلیک فعال می‌شود
+let activated = false; 
+let panelOpened = false;
 
 function render(){
   dots.forEach((d,i)=> d.classList.toggle("filled", i<input.length));
@@ -167,13 +168,15 @@ function check(){
 // کلیک → فعال‌سازی، بدون باز کردن پنل
 hotspot.addEventListener("click", ()=>{
   activated = true;
+  panelOpened = false;
 });
 
-// هاور فقط وقتی کلیک شده، پنل فوراً باز می‌شود
-hotspot.addEventListener("mouseenter", ()=>{
-  if(activated){
+// حرکت ماوس بعد از کلیک → باز کردن پنل فوراً
+hotspot.addEventListener("mousemove", ()=>{
+  if(activated && !panelOpened){
     overlay.classList.add("show");
     reset();
+    panelOpened = true;
   }
 });
 
@@ -188,7 +191,7 @@ overlay.addEventListener("click",(e)=>{
 // بستن پنل با دکمه
 document.getElementById("close").addEventListener("click",()=>{
   overlay.classList.remove("show");
-  activated = false;
+  activated = false; 
 });
 
 // کیبورد عددی
