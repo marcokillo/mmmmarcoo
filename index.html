@@ -36,6 +36,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+      transition: background 0.3s;
+    }
+    .hotspot:hover {
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent);
     }
     .hotspot::after {
       content: "?";
@@ -44,12 +49,16 @@
       text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
     }
     .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.85);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(30, 30, 30, 0.9), rgba(0, 0, 0, 0.95));
       visibility: hidden;
       opacity: 0;
-      transition: opacity 0.1s, visibility 0.1s;
+      transition: opacity 0.2s, visibility 0.2s;
+      display: flex;
       justify-content: center;
       align-items: center;
     }
@@ -58,69 +67,106 @@
       opacity: 1;
     }
     .panel {
-      background: #222;
-      padding: 20px;
-      border-radius: 10px;
+      background: linear-gradient(135deg, #2a2a2a, #1c1c1c);
+      padding: 25px;
+      border-radius: 15px;
       text-align: center;
-      width: 260px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-      transition: transform 0.1s, opacity 0.1s;
-      transform: scale(0.9);
+      width: 280px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), inset 0 0 10px rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+      transform: translateY(20px) scale(0.95);
       opacity: 0;
     }
     .overlay.show .panel {
-      transform: scale(1);
+      transform: translateY(0) scale(1);
       opacity: 1;
     }
     .panel h3 {
-      margin: 0 0 15px;
+      margin: 0 0 20px;
+      font-size: 20px;
+      color: #e0e0e0;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     }
     .dots {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       justify-content: center;
-      margin: 15px 0;
+      margin: 20px 0;
     }
     .dot {
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
-      background: #555;
+      background: #444;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+      transition: background 0.3s, transform 0.3s;
     }
     .dot.filled {
-      background: lime;
+      background: #00ff88;
+      transform: scale(1.2);
+      box-shadow: 0 0 10px #00ff88;
     }
     .keys {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      gap: 12px;
+      padding: 0 10px;
     }
     .key {
-      background: #444;
+      background: linear-gradient(145deg, #333, #222);
       border: none;
-      border-radius: 8px;
-      color: #fff;
+      border-radius: 10px;
+      color: #e0e0e0;
       font-size: 18px;
       padding: 15px;
       cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+      transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
     }
     .key:hover {
-      background: #666;
+      background: linear-gradient(145deg, #444, #333);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    }
+    .key:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+    #clear {
+      background: linear-gradient(145deg, #900, #700);
+    }
+    #clear:hover {
+      background: linear-gradient(145deg, #b00, #900);
     }
     .message {
-      margin-top: 15px;
+      margin-top: 20px;
       font-weight: bold;
-      color: #9f9;
+      color: #00ff88;
+      text-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
       display: none;
+      font-size: 14px;
     }
     #close {
-      margin-top: 15px;
-      background: #900;
-      padding: 8px 12px;
+      margin-top: 20px;
+      background: linear-gradient(145deg, #900, #700);
+      padding: 10px 16px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       color: #fff;
       cursor: pointer;
+      font-size: 16px;
+
+
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s, background 0.2s;
+    }
+    #close:hover {
+      background: linear-gradient(145deg, #b00, #900);
+      transform: translateY(-2px);
+    }
+    #close:active {
+      transform: translateY(0);
     }
     /* انیمیشن لرزش */
     .shake {
@@ -137,33 +183,32 @@
   <div class="safe">
     <img src="safe.jpg" alt="گاوصندوق">
     <div class="hotspot" id="hotspot"></div>
-  </div>
-
-  <div class="overlay" id="overlay">
-    <div class="panel" id="panel">
-      <h3>رمز ۴ رقمی را وارد کنید</h3>
-      <div class="dots">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
+    <div class="overlay" id="overlay">
+      <div class="panel" id="panel">
+        <h3>رمز ۴ رقمی را وارد کنید</h3>
+        <div class="dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <div class="keys">
+          <button class="key" data-k="1">۱</button>
+          <button class="key" data-k="2">۲</button>
+          <button class="key" data-k="3">۳</button>
+          <button class="key" data-k="4">۴</button>
+          <button class="key" data-k="5">۵</button>
+          <button class="key" data-k="6">۶</button>
+          <button class="key" data-k="7">۷</button>
+          <button class="key" data-k="8">۸</button>
+          <button class="key" data-k="9">۹</button>
+          <div></div>
+          <button class="key" data-k="0">۰</button>
+          <button class="key" id="clear">⌫</button>
+        </div>
+        <div class="message" id="msg">پاکتی داخل گاوصندوق هست، رو باز کنید ✅</div>
+        <button id="close">بستن</button>
       </div>
-      <div class="keys">
-        <button class="key" data-k="1">1</button>
-        <button class="key" data-k="2">2</button>
-        <button class="key" data-k="3">3</button>
-        <button class="key" data-k="4">4</button>
-        <button class="key" data-k="5">5</button>
-        <button class="key" data-k="6">6</button>
-        <button class="key" data-k="7">7</button>
-        <button class="key" data-k="8">8</button>
-        <button class="key" data-k="9">9</button>
-        <div></div>
-        <button class="key" data-k="0">0</button>
-        <button class="key" id="clear">⌫</button>
-      </div>
-      <div class="message" id="msg">پاکتی داخل گاوصندوق هست، رو باز کنید ✅</div>
-      <button id="close">بستن</button>
     </div>
   </div>
 
@@ -171,16 +216,12 @@
     const CORRECT = "1357";
     let input = "";
     const overlay = document.getElementById("overlay");
-    const hotspot = document.
-
-
-getElementById("hotspot");
+    const hotspot = document.getElementById("hotspot");
     const dots = document.querySelectorAll(".dot");
     const msg = document.getElementById("msg");
     const panel = document.getElementById("panel");
     const closeBtn = document.getElementById("close");
     const keys = document.querySelectorAll(".key");
-    const clearBtn = document.getElementById("clear");
 
     let activated = false;
     let panelOpened = false;
@@ -206,7 +247,6 @@ getElementById("hotspot");
       }
     }
 
-    // کلیک روی hotspot برای نمایش فوری صفحه قفل
     hotspot.addEventListener("click", () => {
       activated = true;
       panelOpened = true;
@@ -215,7 +255,6 @@ getElementById("hotspot");
       });
     });
 
-    // مدیریت دکمه‌های کیبورد
     keys.forEach(key => {
       key.addEventListener("click", () => {
         if (key.id === "clear") {
@@ -234,7 +273,6 @@ getElementById("hotspot");
       });
     });
 
-    // بستن پنل
     closeBtn.addEventListener("click", () => {
       overlay.classList.remove("show");
       reset();
