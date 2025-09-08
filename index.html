@@ -158,7 +158,7 @@ function check(){
   }
 }
 
-// وقتی کلیک شد، حالت آماده فعال میشه
+// کلیک → فعال‌سازی فوری
 hotspot.addEventListener("click", ()=>{
   activated = true;
 });
@@ -175,7 +175,7 @@ hotspot.addEventListener("mouseenter", ()=>{
 overlay.addEventListener("click",(e)=>{
   if(e.target===overlay){ 
     overlay.classList.remove("show"); 
-    activated = false; // بعد از بستن دوباره غیرفعال
+    activated = false; 
   }
 });
 
