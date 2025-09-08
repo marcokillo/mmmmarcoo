@@ -3,7 +3,7 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>گاوصندوق</title>
   <style>
     body {
@@ -15,6 +15,7 @@
       background: #111;
       font-family: "Vazirmatn", sans-serif;
       color: #fff;
+      overscroll-behavior: none;
     }
     .safe {
       position: relative;
@@ -88,56 +89,38 @@
       color: #e0e0e0;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     }
-    .dots {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      margin: 20px 0;
-    }
-    .dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: #444;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
-      transition: background 0.3s, transform 0.3s;
-    }
-    .dot.filled {
-      background: #00ff88;
-      transform: scale(1.2);
-      box-shadow: 0 0 10px #00ff88;
-    }
-    .keys {
+    .pattern-lock {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin: 20px auto;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      padding: 0 10px;
+      gap: 20px;
+      user-select: none;
     }
-    .key {
-      background: linear-gradient(145deg, #333, #222);
-      border: none;
-      border-radius: 10px;
-      color: #e0e0e0;
-      font-size: 18px;
-      padding: 15px;
+    .pattern-dot {
+      width: 24px;
+      height: 24px;
+      background: #444;
+      border-radius: 50%;
+      position: relative;
       cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.1);
-      transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+      transition: background 0.2s, transform 0.2s;
     }
-    .key:hover {
-      background: linear-gradient(145deg, #444, #333);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    .pattern-dot.selected {
+      background: #00ff88;
+      transform: scale(1.3);
+      box-shadow: 0 0 12px #00ff88;
     }
-    .key:active {
-      transform: translateY(0);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-    }
-    #clear {
-      background: linear-gradient(145deg, #900, #700);
-    }
-    #clear:hover {
-      background: linear-gradient(145deg, #b00, #900);
+    .pattern-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
     }
     .message {
       margin-top: 20px;
@@ -156,9 +139,7 @@
       color: #fff;
       cursor: pointer;
       font-size: 16px;
-
-
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
       transition: transform 0.2s, background 0.2s;
     }
     #close:hover {
@@ -168,7 +149,6 @@ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     #close:active {
       transform: translateY(0);
     }
-    /* انیمیشن لرزش */
     .shake {
       animation: shake 0.3s;
     }
@@ -181,30 +161,25 @@ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 </head>
 <body>
   <div class="safe">
-    <img src="safe.jpg" alt="گاوصندوق">
+    <img src="safe.
+
+
+jpg" alt="گاوصندوق">
     <div class="hotspot" id="hotspot"></div>
     <div class="overlay" id="overlay">
       <div class="panel" id="panel">
-        <h3>رمز ۴ رقمی را وارد کنید</h3>
-        <div class="dots">
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-        </div>
-        <div class="keys">
-          <button class="key" data-k="1">۱</button>
-          <button class="key" data-k="2">۲</button>
-          <button class="key" data-k="3">۳</button>
-          <button class="key" data-k="4">۴</button>
-          <button class="key" data-k="5">۵</button>
-          <button class="key" data-k="6">۶</button>
-          <button class="key" data-k="7">۷</button>
-          <button class="key" data-k="8">۸</button>
-          <button class="key" data-k="9">۹</button>
-          <div></div>
-          <button class="key" data-k="0">۰</button>
-          <button class="key" id="clear">⌫</button>
+        <h3>الگوی قفل را وارد کنید</h3>
+        <div class="pattern-lock" id="pattern-lock">
+          <div class="pattern-dot" data-id="1"></div>
+          <div class="pattern-dot" data-id="2"></div>
+          <div class="pattern-dot" data-id="3"></div>
+          <div class="pattern-dot" data-id="4"></div>
+          <div class="pattern-dot" data-id="5"></div>
+          <div class="pattern-dot" data-id="6"></div>
+          <div class="pattern-dot" data-id="7"></div>
+          <div class="pattern-dot" data-id="8"></div>
+          <div class="pattern-dot" data-id="9"></div>
+          <canvas class="pattern-canvas" id="pattern-canvas"></canvas>
         </div>
         <div class="message" id="msg">پاکتی داخل گاوصندوق هست، رو باز کنید ✅</div>
         <button id="close">بستن</button>
@@ -213,38 +188,64 @@ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   </div>
 
   <script>
-    const CORRECT = "1357";
-    let input = "";
+    const CORRECT_PATTERN = "1357"; // الگو: 1→3→5→7
+    let inputPattern = [];
+    let isDrawing = false;
+    let lastPoint = null;
+
     const overlay = document.getElementById("overlay");
     const hotspot = document.getElementById("hotspot");
-    const dots = document.querySelectorAll(".dot");
-    const msg = document.getElementById("msg");
     const panel = document.getElementById("panel");
     const closeBtn = document.getElementById("close");
-    const keys = document.querySelectorAll(".key");
+    const msg = document.getElementById("msg");
+    const patternLock = document.getElementById("pattern-lock");
+    const patternDots = document.querySelectorAll(".pattern-dot");
+    const canvas = document.getElementById("pattern-canvas");
+    const ctx = canvas.getContext("2d");
 
     let activated = false;
     let panelOpened = false;
 
-    function render() {
-      dots.forEach((d, i) => d.classList.toggle("filled", i < input.length));
-    }
+    // تنظیم اندازه canvas
+    canvas.width = patternLock.offsetWidth;
+    canvas.height = patternLock.offsetHeight;
 
     function reset() {
-      input = "";
-      render();
+      inputPattern = [];
+      patternDots.forEach(dot => dot.classList.remove("selected"));
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       msg.style.display = "none";
     }
 
     function check() {
-      if (input === CORRECT) {
+      const input = inputPattern.join("");
+      if (input === CORRECT_PATTERN) {
         msg.style.display = "block";
       } else {
         panel.classList.add("shake");
         setTimeout(() => panel.classList.remove("shake"), 300);
-        input = "";
-        render();
+        reset();
       }
+    }
+
+    function drawLine(from, to) {
+      if (!from || !to) return;
+      ctx.beginPath();
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(to.x, to.y);
+      ctx.strokeStyle = "#00ff88";
+      ctx.lineWidth = 4;
+      ctx.lineCap = "round";
+      ctx.stroke();
+    }
+
+    function getDotPosition(dot) {
+      const rect = dot.getBoundingClientRect();
+      const parentRect = patternLock.getBoundingClientRect();
+      return {
+        x: rect.left - parentRect.left + rect.width / 2,
+        y: rect.top - parentRect.top + rect.height / 2,
+      };
     }
 
     hotspot.addEventListener("click", () => {
@@ -255,29 +256,89 @@ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
       });
     });
 
-    keys.forEach(key => {
-      key.addEventListener("click", () => {
-        if (key.id === "clear") {
-          input = input.slice(0, -1);
-          render();
-        } else {
-          const value = key.getAttribute("data-k");
-          if (input.length < 4) {
-            input += value;
-            render();
-            if (input.length === 4) {
-              check();
-            }
-          }
-        }
-      });
-    });
-
     closeBtn.addEventListener("click", () => {
       overlay.classList.remove("show");
       reset();
       activated = false;
       panelOpened = false;
+    });
+
+    patternLock.addEventListener("mousedown", (e) => {
+      if (e.target.classList.contains("pattern-dot")) {
+        isDrawing = true;
+        reset();
+        const dot = e.target;
+        const id = dot.getAttribute("data-id");
+        inputPattern.push(id);
+        dot.classList.add("selected");
+        lastPoint = getDotPosition(dot);
+      }
+    });
+
+    patternLock.addEventListener("mousemove", (e) => {
+      if (!isDrawing) return;
+      const dot = e.target.closest(".pattern-dot");
+      if (dot && !dot.classList.contains("selected")) {
+        const id = dot.getAttribute("data-id");
+        inputPattern.push(id);
+        dot.classList.add("selected");
+        const newPoint = getDotPosition(dot);
+        drawLine(lastPoint, newPoint);
+        lastPoint = newPoint;
+      }
+    });
+
+    patternLock.addEventListener("mouseup", () => {
+      if (isDrawing) {
+
+
+isDrawing = false;
+        check();
+      }
+    });
+
+    patternLock.addEventListener("mouseleave", () => {
+      if (isDrawing) {
+        isDrawing = false;
+        check();
+      }
+    });
+
+    // پشتیبانی از لمس برای موبایل
+    patternLock.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const dot = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (dot && dot.classList.contains("pattern-dot")) {
+        isDrawing = true;
+        reset();
+        const id = dot.getAttribute("data-id");
+        inputPattern.push(id);
+        dot.classList.add("selected");
+        lastPoint = getDotPosition(dot);
+      }
+    });
+
+    patternLock.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      if (!isDrawing) return;
+      const touch = e.touches[0];
+      const dot = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (dot && dot.classList.contains("pattern-dot") && !dot.classList.contains("selected")) {
+        const id = dot.getAttribute("data-id");
+        inputPattern.push(id);
+        dot.classList.add("selected");
+        const newPoint = getDotPosition(dot);
+        drawLine(lastPoint, newPoint);
+        lastPoint = newPoint;
+      }
+    });
+
+    patternLock.addEventListener("touchend", () => {
+      if (isDrawing) {
+        isDrawing = false;
+        check();
+      }
     });
   </script>
 </body>
