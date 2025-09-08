@@ -23,7 +23,7 @@
   /* ناحیه هاور */
   .hotspot{
     position:absolute;
-    top:56%;   /* کمی بالاتر از قبل (۶۱٪ بود) */
+    top:56%;
     left:50%;
     transform:translate(-50%,-50%);
     width:120px; height:120px;
@@ -80,12 +80,10 @@
 </head>
 <body>
   <div class="safe">
-    <!-- عکس گاوصندوقت -->
     <img src="safe.jpg" alt="گاوصندوق">
     <div class="hotspot" id="hotspot"></div>
   </div>
 
-  <!-- صفحه رمز -->
   <div class="overlay" id="overlay">
     <div class="panel">
       <h3>رمز ۴ رقمی را وارد کنید</h3>
@@ -121,6 +119,8 @@ const hotspot = document.getElementById("hotspot");
 const dots = document.querySelectorAll(".dot");
 const msg = document.getElementById("msg");
 
+let clicked = false; // پرچم کلیک
+
 function render(){
   dots.forEach((d,i)=> d.classList.toggle("filled", i<input.length));
 }
@@ -133,10 +133,19 @@ function check(){
   }
 }
 
-hotspot.addEventListener("mouseenter",()=>{
-  overlay.classList.add("show");
-  reset();
+// کلیک روی علامت سوال فعال می‌کنه حالت هاور
+hotspot.addEventListener("click", ()=>{
+  clicked = true;
 });
+
+// هاور فقط وقتی که کلیک شده اجرا میشه
+hotspot.addEventListener("mouseenter", ()=>{
+  if(clicked){
+    overlay.classList.add("show");
+    reset();
+  }
+});
+
 document.querySelectorAll(".key").forEach(k=>{
   k.addEventListener("click",()=>{
     if(k.id==="clear"){ input=input.slice(0,-1); render(); return; }
@@ -146,6 +155,7 @@ document.querySelectorAll(".key").forEach(k=>{
     if(input.length===4){ check(); }
   });
 });
+
 overlay.addEventListener("click",(e)=>{
   if(e.target===overlay){ overlay.classList.remove("show"); }
 });
