@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>گاوصندوق</title>
+<style>
+  body{
+    margin:0; height:100vh; display:flex; justify-content:center; align-items:center;
+    background:#111;
+    font-family:"Vazirmatn",sans-serif;
+    color:#fff;
+  }
+  .safe{
+    position:relative;
+    width:400px; /* اندازه گاوصندوق */
+  }
+  .safe img{
+    width:100%;
+    display:block;
+  }
+
+  /* ناحیه هاور روی صفحه‌کلید گاوصندوق */
+  .hotspot{
+    position:absolute;
+    top:61%;   /* محل عمودی دقیق روی عکس */
+    left:50%;  /* وسط افقی */
+    transform:translate(-50%,-50%);
+    width:120px; height:120px; /* اندازه دایره کیپد */
+    border-radius:50%;
+    cursor:pointer;
+  }
+
+  /* صفحه رمز */
+  .overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.85);
+    display:none;
+    justify-content:center;
+    align-items:center;
+  }
+  .overlay.show{ display:flex; }
+  .panel{
+    background:#222; padding:20px; border-radius:10px; text-align:center;
+    width:260px;
+    box-shadow:0 0 20px rgba(0,0,0,.6);
+  }
+  .panel h3{margin:0 0 15px;}
+  .dots{
+    display:flex; gap:10px; justify-content:center; margin:15px 0;
+  }
+  .dot{
+    width:14px; height:14px; border-radius:50%; background:#555;
+  }
+  .dot.filled{ background:lime; }
+  .keys{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+  }
+  .key{
+    background:#444; border:none; border-radius:8px; color:#fff; font-size:18px;
+    padding:15px; cursor:pointer;
+  }
+  .key:hover{ background:#666; }
+  .message{
+    margin-top:15px;
+    font-weight:bold;
+    color:#9f9;
+    display:none;
+  }
+</style>
+</head>
+<body>
+  <div class="safe">
+    <!-- عکس گاوصندوقت رو به اسم safe.jpg بذار کنار این فایل -->
+    <img src="safe.jpg" alt="گاوصندوق">
+    <div class="hotspot" id="hotspot"></div>
+  </div>
+
+  <!-- صفحه رمز -->
+  <div class="overlay" id="overlay">
+    <div class="panel">
+      <h3>رمز ۴ رقمی را وارد کنید</h3>
+      <div class="dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div class="keys">
+        <button class="key" data-k="1">1</button>
+        <button class="key" data-k="2">2</button>
+        <button class="key" data-k="3">3</button>
+        <button class="key" data-k="4">4</button>
+        <button class="key" data-k="5">5</button>
+        <button class="key" data-k="6">6</button>
+        <button class="key" data-k="7">7</button>
+        <button class="key" data-k="8">8</button>
+        <button class="key" data-k="9">9</button>
+        <div></div>
+        <button class="key" data-k="0">0</button>
+        <button class="key" id="clear">⌫</button>
+      </div>
+      <div class="message" id="msg">پاکتی داخل گاوصندوق هست، رو باز کنید ✅</div>
+    </div>
+  </div>
+
+<script>
+const CORRECT = "1357";
+let input = "";
+const overlay = document.getElementById("overlay");
+const hotspot = document.getElementById("hotspot");
+const dots = document.querySelectorAll(".dot");
+const msg = document.getElementById("msg");
+
+function render(){
+  dots.forEach((d,i)=> d.classList.toggle("filled", i<input.length));
+}
+function reset(){ input=""; render(); msg.style.display="none"; }
+function check(){
+  if(input===CORRECT){
+    msg.style.display="block";
+  } else {
+    input=""; render();
+  }
+}
+
+hotspot.addEventListener("mouseenter",()=>{
+  overlay.classList.add("show");
+  reset();
+});
+document.querySelectorAll(".key").forEach(k=>{
+  k.addEventListener("click",()=>{
+    if(k.id==="clear"){ input=input.slice(0,-1); render(); return; }
+    if(input.length>=4) return;
+    input += k.dataset.k;
+    render();
+    if(input.length===4){ check(); }
+  });
+});
+overlay.addEventListener("click",(e)=>{
+  if(e.target===overlay){ overlay.classList.remove("show"); }
+});
+</script>
+</body>
+</html>
