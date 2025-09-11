@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="fa">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>گاوصندوق</title>
+    <title>گاوصندوق خفن</title>
     <style>
         body {
             display: flex;
@@ -11,95 +12,171 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
+            background: url('https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Vazir', Arial, sans-serif;
             direction: rtl;
+            overflow: hidden;
+        }
+        .safe-container {
+            text-align: center;
+            position: relative;
         }
         .safe {
-            width: 200px;
-            height: 200px;
-            background-color: #4a4a4a;
-            border-radius: 10px;
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(145deg, #2c3e50, #4a6076);
+            border-radius: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
             position: relative;
+            overflow: hidden;
         }
         .safe:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
         }
         .safe img {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
         }
-        .password-container {
+        .lock-panel {
             display: none;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: #fff;
+            background: rgba(0, 0, 0, 0.85);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            width: 300px;
             text-align: center;
+            animation: slideIn 0.5s ease;
         }
-        .password-container input {
+        @keyframes slideIn {
+            from { transform: translate(-50%, -60%); opacity: 0; }
+            to { transform: translate(-50%, -50%); opacity: 1; }
+        }
+        .number-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .number-btn {
+            padding: 15px;
+            font-size: 18px;
+            background: #1e90ff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .number-btn:hover {
+            background: #00b7eb;
+            transform: scale(1.1);
+        }
+        .number-btn:active {
+            transform: scale(0.95);
+        }
+        #passwordInput {
+            width: 80%;
             padding: 10px;
             margin: 10px 0;
-            width: 100px;
             font-size: 16px;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            background: #333;
+            color: #fff;
         }
-        .password-container button {
+        #submitBtn {
             padding: 10px 20px;
-            background-color: #28a745;
+            background: #28a745;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
         }
-        .password-container button:hover {
-            background-color: #218838;
+        #submitBtn:hover {
+            background: #218838;
         }
         .message {
             display: none;
-            margin-top: 20px;
-            color: #28a745;
+            margin-top: 15px;
+            font-size: 16px;
             font-weight: bold;
         }
+        .success { color: #00ff00; }
+        .error { color: #ff3333; }
     </style>
 </head>
 <body>
-    <div class="safe" onclick="showPasswordInput()">
-        <img src="https://img.icons8.com/ios-filled/100/ffffff/safe.png" alt="گاوصندوق">
-    </div>
-    <div class="password-container" id="passwordContainer">
-        <h3>رمز را وارد کنید</h3>
-        <input type="text" id="passwordInput" placeholder="رمز">
-        <button onclick="checkPassword()">تأیید</button>
-        <div class="message" id="message"></div>
+    <div class="safe-container">
+        <div class="safe" onclick="showLockPanel()">
+            <img src="https://img.icons8.com/ios-filled/100/ffffff/safe.png" alt="گاوصندوق">
+        </div>
+        <div class="lock-panel" id="lockPanel">
+            <h3>رمز را وارد کنید</h3>
+            <input type="text" id="passwordInput" readonly>
+            <div class="number-pad">
+                <button class="number-btn" onclick="addNumber('1')">۱</button>
+
+
+<button class="number-btn" onclick="addNumber('2')">۲</button>
+                <button class="number-btn" onclick="addNumber('3')">۳</button>
+                <button class="number-btn" onclick="addNumber('4')">۴</button>
+                <button class="number-btn" onclick="addNumber('5')">۵</button>
+                <button class="number-btn" onclick="addNumber('6')">۶</button>
+                <button class="number-btn" onclick="addNumber('7')">۷</button>
+                <button class="number-btn" onclick="addNumber('8')">۸</button>
+                <button class="number-btn" onclick="addNumber('9')">۹</button>
+                <button class="number-btn" onclick="addNumber('0')">۰</button>
+                <button class="number-btn" onclick="clearInput()">پاک</button>
+            </div>
+            <button id="submitBtn" onclick="checkPassword()">تأیید</button>
+            <div class="message" id="message"></div>
+        </div>
     </div>
 
     <script>
-        function showPasswordInput() {
-            document.getElementById('passwordContainer').style.display = 'block';
-            document.getElementById('passwordInput').focus();
+        let password = '';
+
+        function showLockPanel() {
+            document.getElementById('lockPanel').style.display = 'block';
+        }
+
+        function addNumber(num) {
+            if (password.length < 5) {
+                password += num;
+                document.getElementById('passwordInput').value = password;
+            }
+        }
+
+        function clearInput() {
+            password = '';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('message').style.display = 'none';
         }
 
         function checkPassword() {
-            const password = document.getElementById('passwordInput').value;
             const message = document.getElementById('message');
             if (password === '36045') {
                 message.style.display = 'block';
                 message.textContent = 'حالا می‌تونی پاکت داخل گاوصندوق رو باز کنی';
-                message.style.color = '#28a745';
+                message.className = 'message success';
             } else {
                 message.style.display = 'block';
                 message.textContent = 'رمز اشتباه است!';
-                message.style.color = 'red';
+                message.className = 'message error';
             }
         }
     </script>
