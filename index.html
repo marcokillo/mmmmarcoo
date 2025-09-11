@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>گاوصندوق خفن</title>
+    <title>گاوصندوق مرموز</title>
     <style>
         body {
             display: flex;
@@ -12,20 +12,33 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background: url('https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3') no-repeat center center fixed;
+            background: url('https://images.unsplash.com/photo-1508427953056-b00b8d78ebf5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3') no-repeat center center fixed;
             background-size: cover;
-            font-family: 'Vazir', Arial, sans-serif;
+            font-family: 'Creepster', cursive, Arial, sans-serif;
             direction: rtl;
             overflow: hidden;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1;
         }
         .safe-container {
             text-align: center;
             position: relative;
+            z-index: 2;
         }
         .safe {
             width: 250px;
             height: 250px;
-            background: linear-gradient(145deg, #2c3e50, #4a6076);
+            background: linear-gradient(145deg, #1a1a1a, #3c2f2f);
+            border: 2px solid #ff0000;
             border-radius: 15px;
             display: flex;
             justify-content: center;
@@ -35,14 +48,32 @@
             position: relative;
             overflow: hidden;
         }
+        .safe::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 0, 0, 0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .safe:hover::before {
+            opacity: 1;
+        }
         .safe:hover {
-            transform: scale(1.15) rotate(5deg);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            transform: scale(1.1) rotate(3deg);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px) rotate(2deg); }
+            75% { transform: translateX(5px) rotate(-2deg); }
         }
         .safe img {
             width: 120px;
             height: 120px;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+            filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.8));
         }
         .lock-panel {
             display: none;
@@ -50,17 +81,18 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(20, 20, 20, 0.9);
             padding: 20px;
             border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
             backdrop-filter: blur(10px);
-            width: 300px;
+            width: 320px;
             text-align: center;
-            animation: slideIn 0.5s ease;
+            animation: slideIn 0.7s ease;
+            z-index: 3;
         }
         @keyframes slideIn {
-            from { transform: translate(-50%, -60%); opacity: 0; }
+            from { transform: translate(-50%, -70%); opacity: 0; }
             to { transform: translate(-50%, -50%); opacity: 1; }
         }
         .number-pad {
@@ -72,15 +104,17 @@
         .number-btn {
             padding: 15px;
             font-size: 18px;
-            background: #1e90ff;
-            color: white;
-            border: none;
+            background: #3c2f2f;
+            color: #ff0000;
+            border: 1px solid #ff0000;
             border-radius: 10px;
             cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
         }
         .number-btn:hover {
-            background: #00b7eb;
+            background: #ff0000;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
             transform: scale(1.1);
         }
         .number-btn:active {
@@ -90,62 +124,82 @@
             width: 80%;
             padding: 10px;
             margin: 10px 0;
-            font-size: 16px;
+            font-size: 18px;
             text-align: center;
             border: none;
-            border-radius: 5px;
-            background: #333;
-            color: #fff;
+
+
+border-radius: 5px;
+            background: #222;
+            color: #ff0000;
+            box-shadow: inset 0 0 5px rgba(255, 0, 0, 0.5);
         }
         #submitBtn {
             padding: 10px 20px;
-            background: #28a745;
-            color: white;
+            background: #ff0000;
+            color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             margin-top: 10px;
+            transition: background 0.3s;
         }
         #submitBtn:hover {
-            background: #218838;
+            background: #cc0000;
         }
         .message {
             display: none;
             margin-top: 15px;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.8);
         }
         .success { color: #00ff00; }
         .error { color: #ff3333; }
+        .fog {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://i.gifer.com/embedded/download/3fXj.gif') repeat;
+            opacity: 0.3;
+            z-index: 1;
+            pointer-events: none;
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="fog"></div>
     <div class="safe-container">
-        <div class="safe" onclick="showLockPanel()">
+        <div class="safe" onclick="showLockPanel(); playClickSound()">
             <img src="https://img.icons8.com/ios-filled/100/ffffff/safe.png" alt="گاوصندوق">
         </div>
         <div class="lock-panel" id="lockPanel">
-            <h3>رمز را وارد کنید</h3>
+            <h3>رمز را وارد کن...</h3>
             <input type="text" id="passwordInput" readonly>
             <div class="number-pad">
-                <button class="number-btn" onclick="addNumber('1')">۱</button>
-
-
-<button class="number-btn" onclick="addNumber('2')">۲</button>
-                <button class="number-btn" onclick="addNumber('3')">۳</button>
-                <button class="number-btn" onclick="addNumber('4')">۴</button>
-                <button class="number-btn" onclick="addNumber('5')">۵</button>
-                <button class="number-btn" onclick="addNumber('6')">۶</button>
-                <button class="number-btn" onclick="addNumber('7')">۷</button>
-                <button class="number-btn" onclick="addNumber('8')">۸</button>
-                <button class="number-btn" onclick="addNumber('9')">۹</button>
-                <button class="number-btn" onclick="addNumber('0')">۰</button>
-                <button class="number-btn" onclick="clearInput()">پاک</button>
+                <button class="number-btn" onclick="addNumber('1'); playClickSound()">۱</button>
+                <button class="number-btn" onclick="addNumber('2'); playClickSound()">۲</button>
+                <button class="number-btn" onclick="addNumber('3'); playClickSound()">۳</button>
+                <button class="number-btn" onclick="addNumber('4'); playClickSound()">۴</button>
+                <button class="number-btn" onclick="addNumber('5'); playClickSound()">۵</button>
+                <button class="number-btn" onclick="addNumber('6'); playClickSound()">۶</button>
+                <button class="number-btn" onclick="addNumber('7'); playClickSound()">۷</button>
+                <button class="number-btn" onclick="addNumber('8'); playClickSound()">۸</button>
+                <button class="number-btn" onclick="addNumber('9'); playClickSound()">۹</button>
+                <button class="number-btn" onclick="addNumber('0'); playClickSound()">۰</button>
+                <button class="number-btn" onclick="clearInput(); playClickSound()">پاک</button>
             </div>
-            <button id="submitBtn" onclick="checkPassword()">تأیید</button>
+            <button id="submitBtn" onclick="checkPassword(); playSubmitSound()">تأیید</button>
             <div class="message" id="message"></div>
         </div>
     </div>
+
+    <audio id="clickSound" src="https://www.soundjay.com/buttons/button-09a.mp3"></audio>
+    <audio id="submitSound" src="https://www.soundjay.com/mechanical/lock-01.mp3"></audio>
+    <audio id="ambientSound" src="https://www.soundjay.com/ambient/horror-ambience-01.mp3" loop autoplay></audio>
 
     <script>
         let password = '';
@@ -171,13 +225,28 @@
             const message = document.getElementById('message');
             if (password === '36045') {
                 message.style.display = 'block';
-                message.textContent = 'حالا می‌تونی پاکت داخل گاوصندوق رو باز کنی';
-                message.className = 'message success';
+                message.textContent = 'حالا می‌تونی پاکت داخل گاوصندوق رو باز کنی...';
+                message.
+
+
+className = 'message success';
             } else {
                 message.style.display = 'block';
-                message.textContent = 'رمز اشتباه است!';
+                message.textContent = 'رمز اشتباه است... جرأت دوباره امتحان کردن داری؟';
                 message.className = 'message error';
             }
+        }
+
+        function playClickSound() {
+            const sound = document.getElementById('clickSound');
+            sound.currentTime = 0;
+            sound.play();
+        }
+
+        function playSubmitSound() {
+            const sound = document.getElementById('submitSound');
+            sound.currentTime = 0;
+            sound.play();
         }
     </script>
 </body>
