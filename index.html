@@ -1,225 +1,273 @@
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>گاوصندوق مرموز</title>
-    <style>
-        body {
-            background-color: #1a1a1a;
-            color: #e0e0e0;
-            font-family: 'Tahoma', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            position: relative;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>گاوصندوق مرموز</title>
+<style>
+    body {
+        background: radial-gradient(circle at center, #0d0d0d 0%, #000 100%);
+        color: #e0e0e0;
+        font-family: 'Tahoma', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+        position: relative;
+    }
 
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.8) 100%);
-            z-index: -1;
-        }
+    .overlay {
+        position: absolute;
+        inset: 0;
+        background: repeating-radial-gradient(circle, rgba(255,215,0,0.02) 0px, transparent 3px);
+        pointer-events: none;
+        z-index: -1;
+        animation: pulse 6s infinite alternate ease-in-out;
+    }
 
-        .container {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-            max-width: 400px;
-            animation: fadeIn 1.5s ease-in-out;
-            position: relative;
-            overflow: hidden;
-        }
+    @keyframes pulse {
+        0% { opacity: 0.2; transform: scale(1); }
+        100% { opacity: 0.5; transform: scale(1.05); }
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
+    .container {
+        text-align: center;
+        background: rgba(15, 15, 15, 0.85);
+        padding: 50px 40px;
+        border-radius: 20px;
+        box-shadow: 0 0 50px rgba(255, 215, 0, 0.15), inset 0 0 25px rgba(255,215,0,0.05);
+        max-width: 400px;
+        position: relative;
+        transition: transform 0.3s;
+    }
 
-        .safe {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 20px;
-            background: linear-gradient(135deg, #4d4d4d, #2b2b2b);
-            border: 5px solid #ffd700;
-            border-radius: 10px;
-            position: relative;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            transition: transform 0.3s ease;
-        }
+    .shake {
+        animation: shakeAnim 0.5s;
+    }
 
-        .safe:hover {
-            transform: scale(1.05);
-        }
+    @keyframes shakeAnim {
+        0% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        50% { transform: translateX(5px); }
+        75% { transform: translateX(-5px); }
+        100% { transform: translateX(0); }
+    }
 
-        .lock {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            background: #333;
-            border-radius: 50%;
-            border: 4px solid #ffd700;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: rotateLock 10s linear infinite;
-        }
+    .safe {
+        width: 180px;
+        height: 180px;
+        margin: 0 auto 30px;
+        background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
+        border: 4px solid #ffd700;
+        border-radius: 15px;
+        position: relative;
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+    }
 
-        @keyframes rotateLock {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
+    .lock {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80px;
+        height: 80px;
+        border: 3px solid #ffd700;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #111;
+        animation: rotate 12s linear infinite;
+    }
 
-        .lock::before {
-            content: '🔒';
-            font-size: 40px;
-            color: #ffd700;
-        }
+    .lock::before {
+        content: '🔒';
+        font-size: 36px;
+        color: #ffd700;
+    }
 
-        .lock.unlocked::before {
-            content: '🔓';
-            color: #00ff00;
-        }
+    .lock.unlocked::before {
+        content: '🔓';
+        color: #00ff80;
+    }
 
-        .hint {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
+    @keyframes rotate {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
 
-        input[type="text"] {
-            padding: 12px;
-            width: 80%;
-            margin-bottom: 15px;
-            border: 2px solid #ffd700;
-            border-radius: 8px;
-            background: #333;
-            color: #e0e0e0;
-            font-size: 16px;
-            text-align: center;
-            transition: border-color 0.3s;
-        }
+    .hint {
+        font-size: 18px;
+        margin-bottom: 25px;
+        color: #ffd700;
+        text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    }
 
-        input[type="text"]:focus {
-            border-color: #ff4500;
-            outline: none;
-        }
+    .code-display {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 25px;
+    }
 
-        button {
-            padding: 12px 25px;
-            background: linear-gradient(135deg, #ff4500, #ffd700);
-            color: #1a1a1a;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background 0.3s, transform 0.2s;
-        }
+    .digit {
+        width: 40px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #1a1a1a;
+        border: 2px solid #ffd700;
+        border-radius: 6px;
+        font-size: 22px;
+        color: #ffd700;
+        box-shadow: inset 0 0 10px rgba(255,215,0,0.2);
+    }
 
-        button:hover {
-            background: linear-gradient(135deg, #ffd700, #ff4500);
-            transform: scale(1.05);
-        }
+    .keypad {
+        display: grid;
+        grid-template-columns: repeat(3, 70px);
+        gap: 15px;
+        justify-content: center;
+        margin-bottom: 25px;
+    }
 
-        .message {
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 5px;
-            display: none;
-            font-size: 16px;
-            animation: shake 0.5s;
-        }
+    .key {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(145deg, #3b3b3b, #1f1f1f);
+        border: 2px solid #ffd700;
+        border-radius: 50%;
+        color: #ffd700;
+        font-size: 22px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,215,0,0.2);
+        transition: transform 0.2s, background 0.3s;
+    }
 
-        @keyframes shake {
-            0% { transform: translateX(0); }
+    .key:hover {
+        transform: scale(1.1);
+        background: linear-gradient(145deg, #ffd700, #ff9900);
+        color: #000;
+    }
 
-25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
-        }
+    button.confirm {
+        padding: 12px 35px;
+        background: linear-gradient(135deg, #ff4500, #ffd700);
+        color: #1a1a1a;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background 0.3s, transform 0.2s;
+    }
 
-        .message.success {
-            background: rgba(0, 255, 0, 0.2);
-            color: #00ff00;
-            border: 1px solid #00ff00;
-        }
+    button.confirm:hover {
+        background: linear-gradient(135deg, #ffd700, #ff4500);
+        transform: scale(1.05);
+    }
 
-        .message.error {
-            background: rgba(255, 0, 0, 0.2);
-            color: #ff0000;
-            border: 1px solid #ff0000;
-        }
+    .message {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        display: none;
+        font-size: 16px;
+    }
 
-        audio {
-            display: none;
-        }
-    </style>
+    .message.success {
+        background: rgba(0, 255, 0, 0.15);
+        color: #00ff80;
+        border: 1px solid #00ff80;
+    }
+
+    .message.error {
+        background: rgba(255, 0, 0, 0.15);
+        color: #ff5555;
+        border: 1px solid #ff5555;
+    }
+</style>
 </head>
 <body>
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="safe">
-            <div class="lock"></div>
-        </div>
-        <div class="hint">یک عدد ۵رقمی وارد کنید</div>
-        <input type="text" id="code" placeholder="رمز را وارد کنید...">
-        <button onclick="checkCode(); playSubmitSound();">ارسال</button>
-        <div id="message" class="message"></div>
+<div class="overlay"></div>
+<div class="container" id="box">
+    <div class="safe">
+        <div class="lock"></div>
     </div>
+    <div class="hint">رمز ۵ رقمی را وارد کن</div>
+    <div class="code-display" id="codeDisplay">
+        <div class="digit"></div>
+        <div class="digit"></div>
+        <div class="digit"></div>
+        <div class="digit"></div>
+        <div class="digit"></div>
+    </div>
+    <div class="keypad">
+        <div class="key" onclick="press(1)">1</div>
+        <div class="key" onclick="press(2)">2</div>
+        <div class="key" onclick="press(3)">3</div>
+        <div class="key" onclick="press(4)">4</div>
+        <div class="key" onclick="press(5)">5</div>
+        <div class="key" onclick="press(6)">6</div>
+        <div class="key" onclick="press(7)">7</div>
+        <div class="key" onclick="press(8)">8</div>
+        <div class="key" onclick="press(9)">9</div>
+        <div class="key" onclick="clearCode()">←</div>
+        <div class="key" onclick="press(0)">0</div>
+        <div class="key" onclick="removeLast()">⌫</div>
+    </div>
+    <button class="confirm" onclick="checkCode()">تأیید</button>
+    <div id="message" class="message"></div>
+</div>
 
-    <audio id="clickSound" src="https://www.soundjay.com/buttons/button-09.mp3"></audio>
-    <audio id="submitSound" src="https://www.soundjay.com/buttons/button-10.mp3"></audio>
+<script>
+    const correctCode = "73951";
+    let enteredCode = "";
 
-    <script>
-        function checkCode() {
-            const input = document.getElementById('code').value.trim().replace(/\s+/g, ''); // Remove spaces and trim
-            const correctCode = '46530';
-            const message = document.getElementById('message');
-            const lock = document.querySelector('.lock');
-
-            if (input === correctCode) {
-                message.style.display = 'block';
-                message.textContent = 'حالا می‌تونی پاکت داخل گاوصندوق رو باز کنی';
-                message.className = 'message success';
-                lock.classList.add('unlocked');
-            } else {
-                message.style.display = 'block';
-                message.textContent = 'رمز اشتباه است... دوباره تلاش کنید';
-                message.className = 'message error';
-                document.querySelector('.container').style.animation = 'shake 0.5s';
-                setTimeout(() => {
-                    document.querySelector('.container').style.animation = '';
-                }, 500);
-            }
+    function press(num) {
+        if (enteredCode.length < 5) {
+            enteredCode += num;
+            updateDisplay();
         }
+    }
 
-        function playSubmitSound() {
-            const sound = document.getElementById('submitSound');
-            sound.currentTime = 0;
-            sound.play();
+    function removeLast() {
+        enteredCode = enteredCode.slice(0, -1);
+        updateDisplay();
+    }
+
+    function clearCode() {
+        enteredCode = "";
+        updateDisplay();
+    }
+
+    function updateDisplay() {
+        const digits = document.querySelectorAll('.digit');
+        digits.forEach((d, i) => d.textContent = enteredCode[i] || "");
+    }
+
+    function checkCode() {
+        const message = document.getElementById('message');
+        const lock = document.querySelector('.lock');
+        const box = document.getElementById('box');
+
+        if (enteredCode === correctCode) {
+            message.textContent = 'رمز درست است! پاکت را باز کن...';
+            message.className = 'message success';
+            message.style.display = 'block';
+            lock.classList.add('unlocked');
+        } else {
+            message.textContent = 'رمز اشتباه است... دوباره تلاش کن';
+            message.className = 'message error';
+            message.style.display = 'block';
+            box.classList.add('shake');
+            setTimeout(()=> box.classList.remove('shake'), 500);
         }
-
-        document.getElementById('code').addEventListener('focus', () => {
-            const sound = document.getElementById('clickSound');
-            sound.currentTime = 0;
-            sound.play();
-        });
-    </script>
+    }
+</script>
 </body>
 </html>
