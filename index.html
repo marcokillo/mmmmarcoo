@@ -1,246 +1,212 @@
 
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>گاوصندوق مرموز</title>
     <style>
         body {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            font-family: 'Tahoma', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: black;
-            background-size: cover;
-            font-family: 'Creepster', cursive, Arial, sans-serif;
-            direction: rtl;
             overflow: hidden;
             position: relative;
         }
-        body::before {
-            content: '';
+
+        .overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.8) 100%);
+            z-index: -1;
         }
-        .safe-container {
+
+        .container {
             text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-        .safe {
-            width: 250px;
-            height: 250px;
-            background: linear-gradient(145deg, #1a1a1a, #3c2f2f);
-            border: 2px solid #ff0000;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
             border-radius: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            max-width: 400px;
+            animation: fadeIn 1.5s ease-in-out;
             position: relative;
             overflow: hidden;
         }
-        .safe::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255, 0, 0, 0.2), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
-        .safe:hover::before {
-            opacity: 1;
+
+        .safe {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #4d4d4d, #2b2b2b);
+            border: 5px solid #ffd700;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
         }
+
         .safe:hover {
-            transform: scale(1.1) rotate(3deg);
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
-            animation: shake 0.5s;
+            transform: scale(1.05);
         }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px) rotate(2deg); }
-            75% { transform: translateX(5px) rotate(-2deg); }
-        }
-        .safe img {
-            width: 120px;
-            height: 120px;
-            filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.8));
-        }
-        .lock-panel {
-            display: none;
+
+        .lock {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            width: 320px;
-            text-align: center;
-            animation: slideIn 0.7s ease;
-            z-index: 3;
+            width: 80px;
+            height: 80px;
+            background: #333;
+            border-radius: 50%;
+            border: 4px solid #ffd700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: rotateLock 10s linear infinite;
         }
-        @keyframes slideIn {
-            from { transform: translate(-50%, -70%); opacity: 0; }
-            to { transform: translate(-50%, -50%); opacity: 1; }
+
+        @keyframes rotateLock {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
-        .number-pad {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 20px;
+
+        .lock::before {
+            content: '🔒';
+            font-size: 40px;
+            color: #ffd700;
         }
-        .number-btn {
-            padding: 15px;
+
+        .lock.unlocked::before {
+            content: '🔓';
+            color: #00ff00;
+        }
+
+        .hint {
             font-size: 18px;
-            background: #3c2f2f;
+            margin-bottom: 20px;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            width: 80%;
+            margin-bottom: 15px;
+            border: 2px solid #ffd700;
+            border-radius: 8px;
+            background: #333;
+            color: #e0e0e0;
+            font-size: 16px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ff4500;
+            outline: none;
+        }
+
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #ff4500, #ffd700);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #ffd700, #ff4500);
+            transform: scale(1.05);
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            font-size: 16px;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+
+25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .message.success {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+
+        .message.error {
+            background: rgba(255, 0, 0, 0.2);
             color: #ff0000;
             border: 1px solid #ff0000;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
         }
-        .number-btn:hover {
-            background: #ff0000;
-            color: #fff;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
-            transform: scale(1.1);
-        }
-        .number-btn:active {
-            transform: scale(0.95);
-        }
-        #passwordInput {
-            width: 80%;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 18px;
-            text-align: center;
-            border: none;
 
-
-border-radius: 5px;
-            background: #222;
-            color: #ff0000;
-            box-shadow: inset 0 0 5px rgba(255, 0, 0, 0.5);
-        }
-        #submitBtn {
-            padding: 10px 20px;
-            background: #ff0000;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: background 0.3s;
-        }
-        #submitBtn:hover {
-            background: #cc0000;
-        }
-        .message {
+        audio {
             display: none;
-            margin-top: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            text-shadow: 0 0 5px rgba(255, 0, 0, 0.8);
-        }
-        .success { color: #00ff00; }
-        .error { color: #ff3333; }
-        .fog {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://i.gifer.com/embedded/download/3fXj.gif') repeat;
-            opacity: 0.3;
-            z-index: 1;
-            pointer-events: none;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="fog"></div>
-    <div class="safe-container">
-        <div class="safe" onclick="showLockPanel(); playClickSound()">
-            <img src="https://img.icons8.com/ios-filled/100/ffffff/safe.png" alt="گاوصندوق">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="safe">
+            <div class="lock"></div>
         </div>
-        <div class="lock-panel" id="lockPanel">
-            <h3>رمز را وارد کن...</h3>
-            <input type="text" id="passwordInput" readonly>
-            <div class="number-pad">
-                <button class="number-btn" onclick="addNumber('1'); playClickSound()">۱</button>
-                <button class="number-btn" onclick="addNumber('2'); playClickSound()">۲</button>
-                <button class="number-btn" onclick="addNumber('3'); playClickSound()">۳</button>
-                <button class="number-btn" onclick="addNumber('4'); playClickSound()">۴</button>
-                <button class="number-btn" onclick="addNumber('5'); playClickSound()">۵</button>
-                <button class="number-btn" onclick="addNumber('6'); playClickSound()">۶</button>
-                <button class="number-btn" onclick="addNumber('7'); playClickSound()">۷</button>
-                <button class="number-btn" onclick="addNumber('8'); playClickSound()">۸</button>
-                <button class="number-btn" onclick="addNumber('9'); playClickSound()">۹</button>
-                <button class="number-btn" onclick="addNumber('0'); playClickSound()">۰</button>
-                <button class="number-btn" onclick="clearInput(); playClickSound()">پاک</button>
-            </div>
-            <button id="submitBtn" onclick="checkPassword(); playSubmitSound()">تأیید</button>
-            <div class="message" id="message"></div>
-        </div>
+        <div class="hint">یک عدد ۵رقمی وارد کنید</div>
+        <input type="text" id="code" placeholder="رمز را وارد کنید...">
+        <button onclick="checkCode(); playSubmitSound();">ارسال</button>
+        <div id="message" class="message"></div>
     </div>
 
-    <audio id="clickSound" src="https://www.soundjay.com/buttons/button-09a.mp3"></audio>
-    <audio id="submitSound" src="https://www.soundjay.com/mechanical/lock-01.mp3"></audio>
-    <audio id="ambientSound" src="https://www.soundjay.com/ambient/horror-ambience-01.mp3" loop autoplay></audio>
+    <audio id="clickSound" src="https://www.soundjay.com/buttons/button-09.mp3"></audio>
+    <audio id="submitSound" src="https://www.soundjay.com/buttons/button-10.mp3"></audio>
 
     <script>
-        let password = '';
-
-        function showLockPanel() {
-            document.getElementById('lockPanel').style.display = 'block';
-        }
-
-        function addNumber(num) {
-            if (password.length < 5) {
-                password += num;
-                document.getElementById('passwordInput').value = password;
-            }
-        }
-
-        function clearInput() {
-            password = '';
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('message').style.display = 'none';
-        }
-
-        function checkPassword() {
+        function checkCode() {
+            const input = document.getElementById('code').value.trim().replace(/\s+/g, ''); // Remove spaces and trim
+            const correctCode = '46530';
             const message = document.getElementById('message');
-            if (password === '36045') {
+            const lock = document.querySelector('.lock');
+
+            if (input === correctCode) {
                 message.style.display = 'block';
-                message.textContent = 'حالا می‌تونی پاکت داخل گاوصندوق رو باز کنی...';
-                message.
-
-
-className = 'message success';
+                message.textContent = 'حالا می‌تونی پاکت داخل گاوصندوق رو باز کنی';
+                message.className = 'message success';
+                lock.classList.add('unlocked');
             } else {
                 message.style.display = 'block';
-                message.textContent = 'رمز اشتباه است... جرأت دوباره امتحان کردن داری؟';
+                message.textContent = 'رمز اشتباه است... دوباره تلاش کنید';
                 message.className = 'message error';
+                document.querySelector('.container').style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    document.querySelector('.container').style.animation = '';
+                }, 500);
             }
-        }
-
-        function playClickSound() {
-            const sound = document.getElementById('clickSound');
-            sound.currentTime = 0;
-            sound.play();
         }
 
         function playSubmitSound() {
@@ -248,6 +214,12 @@ className = 'message success';
             sound.currentTime = 0;
             sound.play();
         }
+
+        document.getElementById('code').addEventListener('focus', () => {
+            const sound = document.getElementById('clickSound');
+            sound.currentTime = 0;
+            sound.play();
+        });
     </script>
 </body>
 </html>
