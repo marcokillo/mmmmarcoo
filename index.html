@@ -1,298 +1,335 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>گاوصندوق مرموز</title>
-<style>
-    body {
-        background: radial-gradient(circle at center, #0d0d0d 0%, #000 100%);
-        color: #e0e0e0;
-        font-family: 'Tahoma', sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        overflow: hidden;
-        position: relative;
-    }
-
-    .overlay {
-        position: absolute;
-        inset: 0;
-        background: repeating-radial-gradient(circle, rgba(255,43,43,0.03) 0px, transparent 3px);
-        pointer-events: none;
-        z-index: -1;
-        animation: pulse 6s infinite alternate ease-in-out;
-    }
-
-    @keyframes pulse {
-        0% { opacity: 0.2; transform: scale(1); }
-        100% { opacity: 0.5; transform: scale(1.05); }
-    }
-
-    .container {
-        text-align: center;
-        background: rgba(15, 15, 15, 0.85);
-        padding: 40px 30px;
-        border-radius: 20px;
-        box-shadow: 0 0 50px rgba(255, 43, 43, 0.15), inset 0 0 25px rgba(255,43,43,0.05);
-        max-width: 400px;
-        width: 90%;
-        position: relative;
-        transition: transform 0.3s;
-        direction: ltr; /* رمز از چپ به راست */
-    }
-
-    .shake {
-        animation: shakeAnim 0.5s;
-    }
-
-    @keyframes shakeAnim {
-        0% { transform: translateX(0); }
-        25% { transform: translateX(-5px); }
-        50% { transform: translateX(5px); }
-        75% { transform: translateX(-5px); }
-        100% { transform: translateX(0); }
-    }
-
-    .safe {
-        width: 150px;
-        height: 150px;
-        margin: 0 auto 25px;
-        background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
-        border: 4px solid #ff2b2b;
-        border-radius: 15px;
-        position: relative;
-        box-shadow: 0 0 40px rgba(255, 43, 43, 0.3);
-    }
-
-    .lock {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 70px;
-        height: 70px;
-        border: 3px solid #ff2b2b;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #111;
-        animation: rotate 12s linear infinite;
-    }
-
-    .lock::before {
-        content: '🔒';
-        font-size: 32px;
-        color: #ff2b2b;
-    }
-
-    .lock.unlocked::before {
-        content: '🔓';
-        color: #00ff80;
-    }
-
-    @keyframes rotate {
-        0% { transform: translate(-50%, -50%) rotate(0deg); }
-        100% { transform: translate(-50%, -50%) rotate(360deg); }
-    }
-
-    .hint {
-        font-size: 16px;
-        margin-bottom: 20px;
-        color: #ff2b2b;
-        text-shadow: 0 0 15px rgba(255, 43, 43, 0.4);
-    }
-
-    .code-display {
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-        margin-bottom: 25px;
-        direction: ltr;
-    }
-
-    .digit {
-        width: 45px;
-        height: 45px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #1a1a1a;
-        border: 2px solid #ff2b2b;
-        border-radius: 6px;
-        font-size: 20px;
-        color: #ff2b2b;
-        box-shadow: inset 0 0 10px rgba(255,43,43,0.2);
-    }
-
-    .keypad {
-        display: grid;
-        grid-template-columns: repeat(3, 60px);
-        gap: 12px;
-        justify-content: center;
-        margin-bottom: 20px;
-    }
-
-    .key {
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(145deg, #3b3b3b, #1f1f1f);
-        border: 2px solid #ff2b2b;
-        border-radius: 50%;
-        color: #ff2b2b;
-        font-size: 20px;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,43,43,0.2);
-        transition: transform 0.2s, background 0.3s;
-    }
-
-    .key:hover {
-        transform: scale(1.1);
-        background: linear-gradient(145deg, #ff2b2b, #ff5e5e);
-        color: #000;
-    }
-
-    button.confirm {
-        padding: 12px 30px;
-        background: linear-gradient(135deg, #ff2b2b, #ff5e5e);
-        color: #1a1a1a;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: bold;
-        transition: background 0.3s, transform 0.2s;
-    }
-
-    button.confirm:hover {
-        background: linear-gradient(135deg, #ff5e5e, #ff2b2b);
-        transform: scale(1.05);
-    }
-
-    .message {
-        margin-top: 20px;
-        padding: 10px;
-        border-radius: 5px;
-        display: none;
-        font-size: 15px;
-    }
-
-    .message.success {
-        background: rgba(0, 255, 0, 0.15);
-        color: #00ff80;
-        border: 1px solid #00ff80;
-    }
-
-    .message.error {
-        background: rgba(255, 0, 0, 0.15);
-        color: #ff5555;
-        border: 1px solid #ff5555;
-    }
-
-    /* 📱 تنظیمات ریسپانسیو برای موبایل خیلی کوچک */
-    @media (max-width: 400px) {
-        .keypad {
-            grid-template-columns: repeat(3, 50px);
-            gap: 10px;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گاوصندوق مرموز</title>
+    <style>
+        body {
+            background: radial-gradient(circle at center, #0d0d0d 0%, #000 100%);
+            color: #e0e0e0;
+            font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
         }
-        .key {
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: repeating-radial-gradient(circle, rgba(255, 43, 43, 0.03) 0px, transparent 3px);
+            pointer-events: none;
+            z-index: -1;
+            animation: pulse 6s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.2; transform: scale(1); }
+            100% { opacity: 0.5; transform: scale(1.05); }
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(15, 15, 15, 0.85);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(255, 43, 43, 0.15), inset 0 0 25px rgba(255, 43, 43, 0.05);
+            max-width: 400px;
+            width: 90%;
+            min-height: 500px;
+            position: relative;
+            transition: transform 0.3s ease;
+            direction: ltr;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .shake {
+            animation: shakeAnim 0.5s ease;
+        }
+
+        @keyframes shakeAnim {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .safe {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
+            border: 4px solid #ff2b2b;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 0 40px rgba(255, 43, 43, 0.3);
+        }
+
+        .lock {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            border: 3px solid #ff2b2b;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #111;
+            animation: rotate 12s linear infinite;
+        }
+
+        .lock::before {
+            content: '🔒';
+            font-size: 32px;
+            color: #ff2b2b;
+        }
+
+        .lock.unlocked::before {
+            content: '🔓';
+            color: #00ff80;
+        }
+
+        @keyframes rotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .hint {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: #ff2b2b;
+            text-shadow: 0 0 15px rgba(255, 43, 43, 0.4);
+        }
+
+        .code-display {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            direction: ltr;
+        }
+
+        .digit {
             width: 50px;
             height: 50px;
-            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #1a1a1a;
+            border: 2px solid #ff2b2b;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff2b2b;
+            box-shadow: inset 0 0 10px rgba(255, 43, 43, 0.2);
         }
-        .digit {
-            width: 40px;
-            height: 40px;
-            font-size: 18px;
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 70px);
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 1.5rem;
         }
-        .safe {
-            width: 120px;
-            height: 120px;
+
+        .key {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(145deg, #3b3b3b, #1f1f1f);
+            border: 2px solid #ff2b2b;
+            border-radius: 50%;
+            color: #ff2b2b;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 43, 43, 0.2);
+            transition: transform 0.2s, background 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-    }
-</style>
+
+        .key:hover {
+            transform: scale(1.1);
+            background: linear-gradient(145deg, #ff2b2b, #ff5e5e);
+            color: #000;
+        }
+
+        button.confirm {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #ff2b2b, #ff5e5e);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+            margin-bottom: 1rem;
+        }
+
+        button.confirm:hover {
+            background: linear-gradient(135deg, #ff5e5e, #ff2b2b);
+            transform: scale(1.05);
+        }
+
+        .message {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            display: none;
+            text-align: center;
+        }
+
+        .message.success {
+            background: rgba(0, 255, 0, 0.15);
+            color: #00ff80;
+            border: 1px solid #00ff80;
+        }
+
+        .message.error {
+            background: rgba(255, 0, 0, 0.15);
+            color: #ff5555;
+            border: 1px solid #ff5555;
+        }
+
+        /* پاپ‌آپ سفارشی */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: #1a1a1a;
+            border: 2px solid #00ff80;
+            padding: 30px 40px;
+            border-radius: 15px;
+            color: #00ff80;
+            font-size: 1.2rem;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0, 255, 128, 0.5);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+            z-index: 100;
+        }
+
+        .popup.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        @media (max-width: 400px) {
+            .container { padding: 1.5rem; min-height: 450px; }
+            .keypad { grid-template-columns: repeat(3, 55px); gap: 10px; }
+            .key { width: 55px; height: 55px; font-size: 1rem; }
+            .digit { width: 45px; height: 45px; font-size: 1rem; }
+            .safe { width: 120px; height: 120px; }
+            .hint { font-size: 0.9rem; }
+            button.confirm { padding: 10px 25px; font-size: 0.9rem; }
+        }
+    </style>
 </head>
 <body>
-<div class="overlay"></div>
-<div class="container" id="box">
-    <div class="safe">
-        <div class="lock"></div>
+    <div class="overlay"></div>
+    <div class="container" id="box">
+        <div class="safe">
+            <div class="lock"></div>
+        </div>
+        <div class="hint">رمز ۵ رقمی را وارد کن</div>
+        <div class="code-display" id="codeDisplay">
+            <div class="digit"></div>
+            <div class="digit"></div>
+            <div class="digit"></div>
+            <div class="digit"></div>
+            <div class="digit"></div>
+        </div>
+        <div class="keypad">
+            <div class="key" onclick="press(1)">1</div>
+            <div class="key" onclick="press(2)">2</div>
+            <div class="key" onclick="press(3)">3</div>
+            <div class="key" onclick="press(4)">4</div>
+            <div class="key" onclick="press(5)">5</div>
+            <div class="key" onclick="press(6)">6</div>
+            <div class="key" onclick="press(7)">7</div>
+            <div class="key" onclick="press(8)">8</div>
+            <div class="key" onclick="press(9)">9</div>
+            <div class="key" onclick="clearCode()">←</div>
+            <div class="key" onclick="press(0)">0</div>
+            <div class="key" onclick="removeLast()">⌫</div>
+        </div>
+        <button class="confirm" onclick="checkCode()">تأیید</button>
+        <div id="message" class="message"></div>
     </div>
-    <div class="hint">رمز ۵ رقمی را وارد کن</div>
-    <div class="code-display" id="codeDisplay">
-        <div class="digit"></div>
-        <div class="digit"></div>
-        <div class="digit"></div>
-        <div class="digit"></div>
-        <div class="digit"></div>
-    </div>
-    <div class="keypad">
-        <div class="key" onclick="press(1)">1</div>
-        <div class="key" onclick="press(2)">2</div>
-        <div class="key" onclick="press(3)">3</div>
-        <div class="key" onclick="press(4)">4</div>
-        <div class="key" onclick="press(5)">5</div>
-        <div class="key" onclick="press(6)">6</div>
-        <div class="key" onclick="press(7)">7</div>
-        <div class="key" onclick="press(8)">8</div>
-        <div class="key" onclick="press(9)">9</div>
-        <div class="key" onclick="clearCode()">←</div>
-        <div class="key" onclick="press(0)">0</div>
-        <div class="key" onclick="removeLast()">⌫</div>
-    </div>
-    <button class="confirm" onclick="checkCode()">تأیید</button>
-    <div id="message" class="message"></div>
-</div>
 
-<script>
-    const correctCode = "46530";
-    let enteredCode = "";
+    <!-- پاپ‌آپ -->
+    <div id="popup" class="popup">رمز درست است! حالا در پاکت را باز کنید.</div>
 
-    function press(num) {
-        if (enteredCode.length < 5) {
-            enteredCode += num;
+    <script>
+        const correctCode = "46530";
+        let enteredCode = "";
+
+        function press(num) {
+            if (enteredCode.length < 5) {
+                enteredCode += num;
+                updateDisplay();
+            }
+        }
+
+        function removeLast() {
+            enteredCode = enteredCode.slice(0, -1);
             updateDisplay();
         }
-    }
 
-    function removeLast() {
-        enteredCode = enteredCode.slice(0, -1);
-        updateDisplay();
-    }
-
-    function clearCode() {
-        enteredCode = "";
-        updateDisplay();
-    }
-
-    function updateDisplay() {
-        const digits = document.querySelectorAll('.digit');
-        digits.forEach((d, i) => d.textContent = enteredCode[i] || "");
-    }
-
-    function checkCode() {
-        const message = document.getElementById('message');
-        const lock = document.querySelector('.lock');
-        const box = document.getElementById('box');
-
-        if (enteredCode === correctCode) {
-            message.textContent = 'رمز درست است و پاکت داخل گاوصندوق را باز کنید';
-            message.className = 'message success';
-            message.style.display = 'block';
-            lock.classList.add('unlocked');
-        } else {
-            message.textContent = 'رمز اشتباه است... دوباره تلاش کن';
-            message.className = 'message error';
-            message.style.display = 'block';
-            box.classList.add('shake');
-            setTimeout(()=> box.classList.remove('shake'), 500);
+        function clearCode() {
+            enteredCode = "";
+            updateDisplay();
         }
-    }
-</script>
+
+        function updateDisplay() {
+            const digits = document.querySelectorAll('.digit');
+            digits.forEach((d, i) => d.textContent = enteredCode[i] || "");
+        }
+
+        function checkCode() {
+            const message = document.getElementById('message');
+            const lock = document.querySelector('.lock');
+            const box = document.getElementById('box');
+            const popup = document.getElementById('popup');
+
+            if (enteredCode === correctCode) {
+                message.textContent = 'رمز درست است و پاکت داخل گاوصندوق را باز کنید';
+                message.className = 'message success';
+                message.style.display = 'block';
+                lock.classList.add('unlocked');
+
+                // نمایش پاپ‌آپ
+                popup.classList.add('show');
+                setTimeout(() => {
+                    popup.classList.remove('show');
+                }, 3000); // ۳ ثانیه نمایش
+            } else {
+                message.textContent = 'رمز اشتباه است... دوباره تلاش کن';
+                message.className = 'message error';
+                message.style.display = 'block';
+                box.classList.add('shake');
+                setTimeout(() => box.classList.remove('shake'), 500);
+            }
+        }
+    </script>
 </body>
 </html>
+
