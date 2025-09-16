@@ -21,7 +21,7 @@
     .overlay {
         position: absolute;
         inset: 0;
-        background: repeating-radial-gradient(circle, rgba(255,215,0,0.02) 0px, transparent 3px);
+        background: repeating-radial-gradient(circle, rgba(255,43,43,0.03) 0px, transparent 3px);
         pointer-events: none;
         z-index: -1;
         animation: pulse 6s infinite alternate ease-in-out;
@@ -37,10 +37,11 @@
         background: rgba(15, 15, 15, 0.85);
         padding: 50px 40px;
         border-radius: 20px;
-        box-shadow: 0 0 50px rgba(255, 215, 0, 0.15), inset 0 0 25px rgba(255,215,0,0.05);
+        box-shadow: 0 0 50px rgba(255, 43, 43, 0.15), inset 0 0 25px rgba(255,43,43,0.05);
         max-width: 400px;
         position: relative;
         transition: transform 0.3s;
+        direction: ltr; /* رمز از چپ به راست */
     }
 
     .shake {
@@ -60,10 +61,10 @@
         height: 180px;
         margin: 0 auto 30px;
         background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
-        border: 4px solid #ffd700;
+        border: 4px solid #ff2b2b;
         border-radius: 15px;
         position: relative;
-        box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+        box-shadow: 0 0 40px rgba(255, 43, 43, 0.3);
     }
 
     .lock {
@@ -73,7 +74,7 @@
         transform: translate(-50%, -50%);
         width: 80px;
         height: 80px;
-        border: 3px solid #ffd700;
+        border: 3px solid #ff2b2b;
         border-radius: 50%;
         display: flex;
         justify-content: center;
@@ -85,7 +86,7 @@
     .lock::before {
         content: '🔒';
         font-size: 36px;
-        color: #ffd700;
+        color: #ff2b2b;
     }
 
     .lock.unlocked::before {
@@ -101,8 +102,8 @@
     .hint {
         font-size: 18px;
         margin-bottom: 25px;
-        color: #ffd700;
-        text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        color: #ff2b2b;
+        text-shadow: 0 0 15px rgba(255, 43, 43, 0.4);
     }
 
     .code-display {
@@ -110,6 +111,7 @@
         justify-content: center;
         gap: 10px;
         margin-bottom: 25px;
+        direction: ltr;
     }
 
     .digit {
@@ -119,11 +121,11 @@
         justify-content: center;
         align-items: center;
         background: #1a1a1a;
-        border: 2px solid #ffd700;
+        border: 2px solid #ff2b2b;
         border-radius: 6px;
         font-size: 22px;
-        color: #ffd700;
-        box-shadow: inset 0 0 10px rgba(255,215,0,0.2);
+        color: #ff2b2b;
+        box-shadow: inset 0 0 10px rgba(255,43,43,0.2);
     }
 
     .keypad {
@@ -138,25 +140,25 @@
         width: 70px;
         height: 70px;
         background: linear-gradient(145deg, #3b3b3b, #1f1f1f);
-        border: 2px solid #ffd700;
+        border: 2px solid #ff2b2b;
         border-radius: 50%;
-        color: #ffd700;
+        color: #ff2b2b;
         font-size: 22px;
         font-weight: bold;
         cursor: pointer;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,215,0,0.2);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,43,43,0.2);
         transition: transform 0.2s, background 0.3s;
     }
 
     .key:hover {
         transform: scale(1.1);
-        background: linear-gradient(145deg, #ffd700, #ff9900);
+        background: linear-gradient(145deg, #ff2b2b, #ff5e5e);
         color: #000;
     }
 
     button.confirm {
         padding: 12px 35px;
-        background: linear-gradient(135deg, #ff4500, #ffd700);
+        background: linear-gradient(135deg, #ff2b2b, #ff5e5e);
         color: #1a1a1a;
         border: none;
         border-radius: 10px;
@@ -167,7 +169,7 @@
     }
 
     button.confirm:hover {
-        background: linear-gradient(135deg, #ffd700, #ff4500);
+        background: linear-gradient(135deg, #ff5e5e, #ff2b2b);
         transform: scale(1.05);
     }
 
@@ -225,7 +227,7 @@
 </div>
 
 <script>
-    const correctCode = "73951";
+    const correctCode = "46530";
     let enteredCode = "";
 
     function press(num) {
