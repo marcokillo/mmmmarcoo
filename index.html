@@ -196,12 +196,6 @@
             text-align: center;
         }
 
-        .message.success {
-            background: rgba(0, 255, 0, 0.15);
-            color: #00ff80;
-            border: 1px solid #00ff80;
-        }
-
         .message.error {
             background: rgba(255, 0, 0, 0.15);
             color: #ff5555;
@@ -275,7 +269,7 @@
         <div id="message" class="message"></div>
     </div>
 
-    <!-- پاپ‌آپ -->
+    <!-- پاپ‌آپ ثابت -->
     <div id="popup" class="popup">رمز درست است! حالا در پاکت را باز کنید.</div>
 
     <script>
@@ -311,16 +305,13 @@
             const popup = document.getElementById('popup');
 
             if (enteredCode === correctCode) {
-                message.textContent = 'رمز درست است و پاکت داخل گاوصندوق را باز کنید';
-                message.className = 'message success';
-                message.style.display = 'block';
+                // پیام پایین مخفی شود
+                message.style.display = 'none';
+
                 lock.classList.add('unlocked');
 
-                // نمایش پاپ‌آپ
+                // نمایش پاپ‌آپ ثابت
                 popup.classList.add('show');
-                setTimeout(() => {
-                    popup.classList.remove('show');
-                }, 3000); // ۳ ثانیه نمایش
             } else {
                 message.textContent = 'رمز اشتباه است... دوباره تلاش کن';
                 message.className = 'message error';
@@ -332,4 +323,3 @@
     </script>
 </body>
 </html>
-
