@@ -35,10 +35,11 @@
     .container {
         text-align: center;
         background: rgba(15, 15, 15, 0.85);
-        padding: 50px 40px;
+        padding: 40px 30px;
         border-radius: 20px;
         box-shadow: 0 0 50px rgba(255, 43, 43, 0.15), inset 0 0 25px rgba(255,43,43,0.05);
         max-width: 400px;
+        width: 90%;
         position: relative;
         transition: transform 0.3s;
         direction: ltr; /* رمز از چپ به راست */
@@ -57,9 +58,9 @@
     }
 
     .safe {
-        width: 180px;
-        height: 180px;
-        margin: 0 auto 30px;
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 25px;
         background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
         border: 4px solid #ff2b2b;
         border-radius: 15px;
@@ -72,8 +73,8 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 80px;
-        height: 80px;
+        width: 70px;
+        height: 70px;
         border: 3px solid #ff2b2b;
         border-radius: 50%;
         display: flex;
@@ -85,7 +86,7 @@
 
     .lock::before {
         content: '🔒';
-        font-size: 36px;
+        font-size: 32px;
         color: #ff2b2b;
     }
 
@@ -100,8 +101,8 @@
     }
 
     .hint {
-        font-size: 18px;
-        margin-bottom: 25px;
+        font-size: 16px;
+        margin-bottom: 20px;
         color: #ff2b2b;
         text-shadow: 0 0 15px rgba(255, 43, 43, 0.4);
     }
@@ -109,41 +110,41 @@
     .code-display {
         display: flex;
         justify-content: center;
-        gap: 10px;
+        gap: 8px;
         margin-bottom: 25px;
         direction: ltr;
     }
 
     .digit {
-        width: 50px;   /* مربع */
-        height: 50px;  /* مربع */
+        width: 45px;
+        height: 45px;
         display: flex;
         justify-content: center;
         align-items: center;
         background: #1a1a1a;
         border: 2px solid #ff2b2b;
         border-radius: 6px;
-        font-size: 22px;
+        font-size: 20px;
         color: #ff2b2b;
         box-shadow: inset 0 0 10px rgba(255,43,43,0.2);
     }
 
     .keypad {
         display: grid;
-        grid-template-columns: repeat(3, 70px);
-        gap: 15px;
+        grid-template-columns: repeat(3, 60px);
+        gap: 12px;
         justify-content: center;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
     }
 
     .key {
-        width: 70px;
-        height: 70px;
+        width: 60px;
+        height: 60px;
         background: linear-gradient(145deg, #3b3b3b, #1f1f1f);
         border: 2px solid #ff2b2b;
         border-radius: 50%;
         color: #ff2b2b;
-        font-size: 22px;
+        font-size: 20px;
         font-weight: bold;
         cursor: pointer;
         box-shadow: 0 5px 15px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,43,43,0.2);
@@ -157,7 +158,7 @@
     }
 
     button.confirm {
-        padding: 12px 35px;
+        padding: 12px 30px;
         background: linear-gradient(135deg, #ff2b2b, #ff5e5e);
         color: #1a1a1a;
         border: none;
@@ -178,7 +179,7 @@
         padding: 10px;
         border-radius: 5px;
         display: none;
-        font-size: 16px;
+        font-size: 15px;
     }
 
     .message.success {
@@ -191,6 +192,28 @@
         background: rgba(255, 0, 0, 0.15);
         color: #ff5555;
         border: 1px solid #ff5555;
+    }
+
+    /* 📱 تنظیمات ریسپانسیو برای موبایل خیلی کوچک */
+    @media (max-width: 400px) {
+        .keypad {
+            grid-template-columns: repeat(3, 50px);
+            gap: 10px;
+        }
+        .key {
+            width: 50px;
+            height: 50px;
+            font-size: 18px;
+        }
+        .digit {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+        }
+        .safe {
+            width: 120px;
+            height: 120px;
+        }
     }
 </style>
 </head>
