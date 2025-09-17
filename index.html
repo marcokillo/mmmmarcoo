@@ -339,7 +339,11 @@
                 message.textContent = 'رمز اشتباه است... دوباره تلاش کن';
                 message.className = 'message error';
                 box.classList.add('shake');
-                setTimeout(() => box.classList.remove('shake'), 500);
+                setTimeout(() => {
+                    box.classList.remove('shake');
+                    message.textContent = ''; // پاک کردن پیام
+                    message.className = 'message'; // بازگشت به کلاس اصلی
+                }, 5000); // 5000 میلی‌ثانیه = 5 ثانیه
             }
         }
     </script>
