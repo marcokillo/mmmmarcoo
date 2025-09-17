@@ -183,26 +183,7 @@
             transform: scale(1.05);
         }
 
-        .message {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            display: none;
-            text-align: center;
-        }
-
-        .message.error {
-            background: rgba(255, 0, 0, 0.15);
-            color: #ff5555;
-            border: 1px solid #ff5555;
-        }
-
-        /* پاپ‌آپ سفارشی */
+        /* پاپ‌آپ ثابت */
         .popup {
             position: fixed;
             top: 50%;
@@ -226,15 +207,24 @@
             opacity: 1;
         }
 
-        @media (max-width: 400px) {
-            .container { padding: 1.5rem; min-height: 450px; }
-            .keypad { grid-template-columns: repeat(3, 55px); gap: 10px; }
-            .key { width: 55px; height: 55px; font-size: 1rem; }
-            .digit { width: 45px; height: 45px; font-size: 1rem; }
-            .safe { width: 120px; height: 120px; }
-            .hint { font-size: 0.9rem; }
-            button.confirm { padding: 10px 25px; font-size: 0.9rem; }
+        /* پیام خطا */
+        .message.error {
+            background: rgba(255, 0, 0, 0.15);
+            color: #ff5555;
+            border: 1px solid #ff5555;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            text-align: center;
         }
+
     </style>
 </head>
 <body>
