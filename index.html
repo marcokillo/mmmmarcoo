@@ -137,9 +137,9 @@
         .keypad {
             display: grid;
             grid-template-columns: repeat(3, 70px);
-            gap: 12px;
+            gap: 8px;
             justify-content: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .key {
@@ -175,12 +175,26 @@
             font-size: 1rem;
             font-weight: bold;
             transition: background 0.3s, transform 0.2s;
-            margin-bottom: 1rem;
+            margin-top: 0.5rem;
         }
 
         button.confirm:hover {
             background: linear-gradient(135deg, #ff5e5e, #ff2b2b);
             transform: scale(1.05);
+        }
+
+        /* پیام ساده */
+        .message {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .message.error {
+            color: #ff5555;
+        }
+        .message.success {
+            color: #00ff80;
         }
 
         /* پاپ‌آپ ثابت */
@@ -207,24 +221,44 @@
             opacity: 1;
         }
 
-        /* پیام خطا */
-        .message.error {
-            background: rgba(255, 0, 0, 0.15);
-            color: #ff5555;
-            border: 1px solid #ff5555;
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            padding: 10px;
-            border-radius: 8px;
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            text-align: center;
+        /* ریسپانسیو برای موبایل */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 95%;
+                padding: 1rem;
+                min-height: auto;
+            }
+            .safe {
+                width: 120px;
+                height: 120px;
+                margin-bottom: 1rem;
+            }
+            .lock {
+                width: 55px;
+                height: 55px;
+            }
+            .digit {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            .keypad {
+                grid-template-columns: repeat(3, 55px);
+                gap: 6px;
+            }
+            .key {
+                width: 55px;
+                height: 55px;
+                font-size: 1rem;
+            }
+            button.confirm {
+                padding: 8px 18px;
+                font-size: 0.9rem;
+            }
+            .message {
+                font-size: 0.95rem;
+            }
         }
-
     </style>
 </head>
 <body>
@@ -255,8 +289,10 @@
             <div class="key" onclick="press(0)">0</div>
             <div class="key" onclick="removeLast()">⌫</div>
         </div>
-        <button class="confirm" onclick="checkCode()">تأیید</button>
+
+        <!-- پیام بالای دکمه -->
         <div id="message" class="message"></div>
+        <button class="confirm" onclick="checkCode()">تأیید</button>
     </div>
 
     <!-- پاپ‌آپ ثابت -->
@@ -295,17 +331,13 @@
             const popup = document.getElementById('popup');
 
             if (enteredCode === correctCode) {
-                // پیام پایین مخفی شود
-                message.style.display = 'none';
-
+                message.textContent = 'رمز درست است ✅';
+                message.className = 'message success';
                 lock.classList.add('unlocked');
-
-                // نمایش پاپ‌آپ ثابت
                 popup.classList.add('show');
             } else {
                 message.textContent = 'رمز اشتباه است... دوباره تلاش کن';
                 message.className = 'message error';
-                message.style.display = 'block';
                 box.classList.add('shake');
                 setTimeout(() => box.classList.remove('shake'), 500);
             }
