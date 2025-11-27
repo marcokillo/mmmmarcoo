@@ -1,351 +1,549 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>گاوصندوق استیو</title>
-    <style>
-        body {
-            background: radial-gradient(circle at center, #0d0d0d 0%, #000 100%);
-            color: #e0e0e0;
-            font-family: 'Vazirmatn', 'Tahoma', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            position: relative;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>معمای 1980</title>
+  <style>
+    /* تم کلاسیک و نوستالژیک با وایب ویکتوریایی، نور شمع و سایه‌های گرم */
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;700&display=swap');
+    
+    :root {
+      --primary-gold: #D4AF37;
+      --accent-amber: #FF8C00;
+      --bg-dark: #1a0f0b;
+      --text-warm: #F5DEB3;
+      --shadow-warm: rgba(212, 175, 55, 0.3);
+      --candle-glow: rgba(255, 193, 7, 0.4);
+      --scanline-opacity: 0.02;
+    }
 
-        .overlay {
-            position: absolute;
-            inset: 0;
-            background: repeating-radial-gradient(circle, rgba(255, 43, 43, 0.03) 0px, transparent 3px);
-            pointer-events: none;
-            z-index: -1;
-            animation: pulse 6s infinite alternate ease-in-out;
-        }
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: 'Crimson Text', serif;
+      background: linear-gradient(to bottom, var(--bg-dark), #2d1b14);
+      overflow: hidden;
+      color: var(--text-warm);
+      position: relative;
+    }
 
-        @keyframes pulse {
-            0% { opacity: 0.2; transform: scale(1); }
-            100% { opacity: 0.5; transform: scale(1.05); }
-        }
+    /* افکت‌های کلاسیک: پارچمنت و سایه‌های نرم به جای VHS */
+    .parchment-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 245, 238, 0.02) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(245, 222, 179, 0.02) 0%, transparent 50%),
+        linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0.8;
+    }
 
-        .container {
-            text-align: center;
-            background: rgba(15, 15, 15, 0.85);
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 0 50px rgba(255, 43, 43, 0.15), inset 0 0 25px rgba(255, 43, 43, 0.05);
-            max-width: 400px;
-            width: 90%;
-            min-height: 500px;
-            position: relative;
-            transition: transform 0.3s ease;
-            direction: ltr;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+    .scanline {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        rgba(245, 222, 179, var(--scanline-opacity)) 1px,
+        transparent 3px
+      );
+      pointer-events: none;
+      z-index: 5;
+    }
 
-        .shake {
-            animation: shakeAnim 0.5s ease;
-        }
+    .subtle-glitch {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.02), transparent);
+      animation: subtleFlicker 5s infinite ease-in-out;
+      pointer-events: none;
+    }
 
-        @keyframes shakeAnim {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
-        }
+    @keyframes subtleFlicker {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 0.8; }
+    }
 
-        .safe {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 1.5rem;
-            background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
-            border: 4px solid #ff2b2b;
-            border-radius: 15px;
-            position: relative;
-            box-shadow: 0 0 40px rgba(255, 43, 43, 0.3);
-        }
+    /* صفحه فول‌اسکرین با فیلترهای کلاسیک */
+    .screen {
+      position: fixed;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: sepia(0.3) contrast(1.05) brightness(0.9) saturate(0.8);
+      animation: candleFlicker 4s infinite ease-in-out;
+      z-index: 1;
+    }
 
-        .lock {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 70px;
-            height: 70px;
-            border: 3px solid #ff2b2b;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #111;
-            animation: rotate 12s linear infinite;
-        }
+    @keyframes candleFlicker {
+      0%, 100% { filter: sepia(0.3) contrast(1.05) brightness(0.9) saturate(0.8); opacity: 1; }
+      25% { filter: sepia(0.4) contrast(1.1) brightness(0.95) saturate(0.9); opacity: 0.98; }
+      50% { filter: sepia(0.2) contrast(1) brightness(0.85) saturate(0.7); opacity: 0.99; }
+      75% { filter: sepia(0.35) contrast(1.08) brightness(0.92) saturate(0.85); opacity: 0.97; }
+    }
 
-        .lock::before {
-            content: '🔒';
-            font-size: 32px;
-            color: #ff2b2b;
-        }
+    /* باکس مرکزی با استایل کلاسیک: قاب چوبی و نور شمع */
+    .center-box {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(to bottom, rgba(139, 69, 19, 0.9), rgba(101, 67, 33, 0.9));
+      backdrop-filter: blur(8px);
+      padding: clamp(25px, 6vw, 45px) clamp(25px, 6vw, 45px);
+      border: 4px solid var(--primary-gold);
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 
+        0 0 40px var(--shadow-warm),
+        inset 0 0 25px rgba(212, 175, 55, 0.15),
+        5px 5px 15px rgba(0, 0, 0, 0.5);
+      z-index: 20;
+      animation: warmGlow 4s infinite ease-in-out;
+      max-width: 90vw;
+      font-family: 'Playfair Display', serif;
+    }
 
-        .lock.unlocked::before {
-            content: '🔓';
-            color: #00ff80;
-        }
+    @keyframes warmGlow {
+      0%, 100% { box-shadow: 0 0 40px var(--shadow-warm), inset 0 0 25px rgba(212, 175, 55, 0.15); }
+      50% { box-shadow: 0 0 60px var(--candle-glow), inset 0 0 35px rgba(212, 175, 55, 0.25); }
+    }
 
-        @keyframes rotate {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
+    .center-box h2 {
+      font-size: clamp(16px, 4.5vw, 24px);
+      margin-bottom: 25px;
+      text-shadow: 
+        0 0 12px var(--primary-gold),
+        2px 2px 4px rgba(0, 0, 0, 0.7);
+      color: var(--text-warm);
+      font-weight: 700;
+      letter-spacing: 1px;
+      animation: textWarmPulse 3s infinite;
+    }
 
-        .hint {
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            color: #ff2b2b;
-            text-shadow: 0 0 15px rgba(255, 43, 43, 0.4);
-        }
+    @keyframes textWarmPulse {
+      0%, 100% { color: var(--text-warm); transform: scale(1); }
+      50% { color: #FFE4B5; transform: scale(1.02); }
+    }
 
-        .code-display {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 1.5rem;
-            direction: ltr;
-        }
+    .center-box input {
+      width: min(80%, 280px);
+      padding: 14px 18px;
+      border: 3px solid var(--primary-gold);
+      outline: none;
+      background: rgba(245, 222, 179, 0.1);
+      color: var(--text-warm);
+      font-family: 'Crimson Text', serif;
+      font-size: clamp(14px, 3.5vw, 18px);
+      text-align: center;
+      border-radius: 8px;
+      transition: all 0.4s ease;
+      box-shadow: 
+        0 0 15px rgba(212, 175, 55, 0.4),
+        inset 0 0 10px rgba(0, 0, 0, 0.3);
+    }
 
-        .digit {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #1a1a1a;
-            border: 2px solid #ff2b2b;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #ff2b2b;
-            box-shadow: inset 0 0 10px rgba(255, 43, 43, 0.2);
-        }
+    .center-box input:focus {
+      border-color: var(--accent-amber);
+      box-shadow: 
+        0 0 25px var(--accent-amber),
+        inset 0 0 15px rgba(255, 140, 0, 0.2);
+      transform: scale(1.03);
+    }
 
-        .keypad {
-            display: grid;
-            grid-template-columns: repeat(3, 70px);
-            gap: 8px;
-            justify-content: center;
-            margin-bottom: 1rem;
-        }
+    .center-box input::placeholder {
+      color: rgba(245, 222, 179, 0.6);
+      font-style: italic;
+    }
 
-        .key {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(145deg, #3b3b3b, #1f1f1f);
-            border: 2px solid #ff2b2b;
-            border-radius: 50%;
-            color: #ff2b2b;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 43, 43, 0.2);
-            transition: transform 0.2s, background 0.3s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    .center-box button {
+      margin-top: 25px;
+      padding: 14px 28px;
+      background: linear-gradient(45deg, var(--primary-gold), var(--accent-amber));
+      border: 2px solid var(--primary-gold);
+      cursor: pointer;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(12px, 3vw, 16px);
+      color: #2d1b14;
+      border-radius: 8px;
+      transition: all 0.4s ease;
+      box-shadow: 
+        0 0 20px var(--shadow-warm),
+        inset 0 0 15px rgba(255, 255, 255, 0.2);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
 
-        .key:hover {
-            transform: scale(1.1);
-            background: linear-gradient(145deg, #ff2b2b, #ff5e5e);
-            color: #000;
-        }
+    .center-box button:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 
+        0 8px 30px var(--candle-glow),
+        inset 0 0 20px rgba(255, 255, 255, 0.3);
+      background: linear-gradient(45deg, var(--accent-amber), var(--primary-gold));
+    }
 
-        button.confirm {
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #ff2b2b, #ff5e5e);
-            color: #1a1a1a;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: background 0.3s, transform 0.2s;
-            margin-top: 0.5rem;
-        }
+    .center-box button:active {
+      transform: translateY(-1px) scale(1.02);
+    }
 
-        button.confirm:hover {
-            background: linear-gradient(135deg, #ff5e5e, #ff2b2b);
-            transform: scale(1.05);
-        }
+    #feedback {
+      color: #CD5C5C;
+      margin-top: 15px;
+      font-size: clamp(12px, 3vw, 14px);
+      text-shadow: 0 0 8px #CD5C5C;
+      animation: shake 0.6s ease-in-out;
+      font-style: italic;
+    }
 
-        /* پیام ساده */
-        .message {
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin: 0.5rem 0;
-            text-align: center;
-        }
-        .message.error {
-            color: #ff5555;
-        }
-        .message.success {
-            color: #00ff80;
-        }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
 
-        /* پاپ‌آپ ثابت */
-        .popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            background: #1a1a1a;
-            border: 2px solid #00ff80;
-            padding: 30px 40px;
-            border-radius: 15px;
-            color: #00ff80;
-            font-size: 1.2rem;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(0, 255, 128, 0.5);
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            opacity: 0;
-            z-index: 100;
-        }
+    /* شمع متحرک با گرافیک بالا (SVG انیمیت شده) */
+    #candle-container {
+      position: absolute;
+      bottom: clamp(20px, 5vh, 40px);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 25;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+    }
 
-        .popup.show {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
+    #candle-svg {
+      width: clamp(60px, 10vw, 100px);
+      height: auto;
+      animation: candleSway 6s infinite ease-in-out;
+    }
 
-        /* ریسپانسیو برای موبایل */
-        @media (max-width: 480px) {
-            .container {
-                max-width: 95%;
-                padding: 1rem;
-                min-height: auto;
-            }
-            .safe {
-                width: 120px;
-                height: 120px;
-                margin-bottom: 1rem;
-            }
-            .lock {
-                width: 55px;
-                height: 55px;
-            }
-            .digit {
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
-            }
-            .keypad {
-                grid-template-columns: repeat(3, 55px);
-                gap: 6px;
-            }
-            .key {
-                width: 55px;
-                height: 55px;
-                font-size: 1rem;
-            }
-            button.confirm {
-                padding: 8px 18px;
-                font-size: 0.9rem;
-            }
-            .message {
-                font-size: 0.95rem;
-            }
-        }
-    </style>
+    @keyframes candleSway {
+      0%, 100% { transform: rotate(-1deg); }
+      25% { transform: rotate(1deg); }
+      50% { transform: rotate(-0.5deg); }
+      75% { transform: rotate(0.5deg); }
+    }
+
+    .flame {
+      animation: flameFlicker 0.5s infinite ease-in-out;
+    }
+
+    @keyframes flameFlicker {
+      0%, 100% { transform: scale(1) rotate(-2deg); opacity: 1; }
+      25% { transform: scale(1.1) rotate(1deg); opacity: 0.9; }
+      50% { transform: scale(0.95) rotate(0deg); opacity: 1.1; }
+      75% { transform: scale(1.05) rotate(-1deg); opacity: 0.95; }
+    }
+
+    /* مودال با تم کلاسیک */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 15, 11, 0.96);
+      backdrop-filter: blur(6px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 30;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-box {
+      background: linear-gradient(to bottom, rgba(139, 69, 19, 0.95), rgba(101, 67, 33, 0.95));
+      padding: clamp(25px, 6vw, 45px);
+      border: 4px solid var(--accent-amber);
+      border-radius: 15px;
+      box-shadow: 
+        0 0 50px var(--shadow-warm),
+        inset 0 0 25px rgba(255, 140, 0, 0.15);
+      text-align: center;
+      max-width: 95vw;
+      animation: warmGlow 4s infinite ease-in-out;
+    }
+
+    .modal-box img {
+      width: 90vw;
+      max-width: 750px;
+      height: auto;
+      border: 3px solid var(--primary-gold);
+      border-radius: 10px;
+      box-shadow: 0 0 30px var(--candle-glow);
+      transition: transform 0.4s ease;
+    }
+
+    .modal-box img:hover {
+      transform: scale(1.03);
+    }
+
+    .modal-box button {
+      margin-top: 25px;
+      padding: 14px 28px;
+      background: linear-gradient(45deg, var(--accent-amber), var(--primary-gold));
+      border: 2px solid var(--accent-amber);
+      color: #2d1b14;
+      cursor: pointer;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(12px, 3vw, 16px);
+      border-radius: 8px;
+      transition: all 0.4s ease;
+      box-shadow: 0 0 20px var(--shadow-warm);
+      font-weight: 600;
+    }
+
+    .modal-box button:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 30px var(--candle-glow);
+    }
+
+    /* صفحات متن با typography کلاسیک و انیمیشن‌های نرم */
+    .story-page {
+      display: none;
+      position: fixed;
+      inset: 0;
+      overflow-y: auto;
+      padding: clamp(30px, 7vw, 60px);
+      background: linear-gradient(to bottom, var(--bg-dark), #2d1b14);
+      color: var(--text-warm);
+      line-height: 1.9;
+      font-size: clamp(14px, 3.5vw, 20px);
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+      scroll-behavior: smooth;
+      z-index: 15;
+      font-family: 'Crimson Text', serif;
+    }
+
+    .story-page h1 {
+      font-size: clamp(24px, 6vw, 32px);
+      color: var(--primary-gold);
+      text-align: center;
+      margin-bottom: 40px;
+      text-shadow: 
+        0 0 20px var(--primary-gold),
+        2px 2px 8px rgba(0, 0, 0, 0.8);
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      letter-spacing: 2px;
+      animation: titleFade 1.2s ease-out;
+    }
+
+    @keyframes titleFade {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .story-page p {
+      margin-bottom: 25px;
+      opacity: 0;
+      animation: fadeInUp 1s ease-out forwards;
+      animation-delay: calc(0.2s * var(--delay, 0));
+      text-align: justify;
+      padding: 0 10px;
+    }
+
+    .story-page p:nth-child(1) { --delay: 0; }
+    .story-page p:nth-child(2) { --delay: 1; }
+    .story-page p:nth-child(3) { --delay: 2; }
+    .story-page p:nth-child(4) { --delay: 3; }
+    .story-page p:nth-child(5) { --delay: 4; }
+    .story-page p:nth-child(6) { --delay: 5; }
+    .story-page p:nth-child(7) { --delay: 6; }
+    .story-page p:nth-child(8) { --delay: 7; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Media Queries برای responsive */
+    @media (max-width: 768px) {
+      .center-box {
+        padding: 20px 25px;
+        margin: 10px;
+        max-width: calc(100vw - 20px);
+      }
+
+      .story-page {
+        padding: 20px;
+        font-size: clamp(16px, 4vw, 18px);
+      }
+
+      .modal-box img {
+        width: 95vw;
+      }
+
+      .center-box input {
+        width: 100%;
+        max-width: 220px;
+      }
+
+      #candle-container {
+        bottom: 10px;
+      }
+
+      #candle-svg {
+        width: clamp(50px, 12vw, 80px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .story-page p {
+        font-size: clamp(14px, 4.5vw, 16px);
+      }
+
+      .center-box button,
+      .modal-box button {
+        padding: 12px 20px;
+        font-size: 12px;
+      }
+    }
+
+    /* Transitions */
+    .page-transition {
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .page-transition.fade-out {
+      opacity: 0;
+      transform: translateY(25px);
+    }
+  </style>
 </head>
 <body>
-    <div class="overlay"></div>
-    <div class="container" id="box">
-        <div class="safe">
-            <div class="lock"></div>
-        </div>
-        <div class="hint">رمز ۵ رقمی را وارد کن</div>
-        <div class="code-display" id="codeDisplay">
-            <div class="digit"></div>
-            <div class="digit"></div>
-            <div class="digit"></div>
-            <div class="digit"></div>
-            <div class="digit"></div>
-        </div>
-        <div class="keypad">
-            <div class="key" onclick="press(1)">1</div>
-            <div class="key" onclick="press(2)">2</div>
-            <div class="key" onclick="press(3)">3</div>
-            <div class="key" onclick="press(4)">4</div>
-            <div class="key" onclick="press(5)">5</div>
-            <div class="key" onclick="press(6)">6</div>
-            <div class="key" onclick="press(7)">7</div>
-            <div class="key" onclick="press(8)">8</div>
-            <div class="key" onclick="press(9)">9</div>
-            <div class="key" onclick="clearCode()">←</div>
-            <div class="key" onclick="press(0)">0</div>
-            <div class="key" onclick="removeLast()">⌫</div>
-        </div>
+  <!-- Overlay کلاسیک -->
+  <div class="parchment-overlay">
+    <div class="scanline"></div>
+    <div class="subtle-glitch"></div>
+  </div>
 
-        <!-- پیام بالای دکمه -->
-        <div id="message" class="message"></div>
-        <button class="confirm" onclick="checkCode()">تأیید</button>
+  <!-- صفحه اول -->
+  <div id="page1" class="page-transition">
+    <div class="screen" id="bg1" style="background-image: url('001.jpg')"></div>
+    <div class="center-box">
+      <h2>پاسخ صحیح را وارد کنید</h2>
+      <input id="answerInput" placeholder="----" maxlength="4">
+      <button id="submitBtn">تأیید</button>
+      <div id="feedback" style="display: none;"></div>
     </div>
+    <!-- شمع متحرک -->
+    <div id="candle-container">
+      <svg id="candle-svg" viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+        <!-- بدنه شمع -->
+        <defs>
+          <linearGradient id="candleGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#F5DEB3;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#D2B48C;stop-opacity:1" />
+          </linearGradient>
+          <filter id="candleShadow" x="-50%" y="-50%" width="200%" height="200%">
+            <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/>
+          </filter>
+        </defs>
+        <rect x="40" y="20" width="20" height="100" rx="10" fill="url(#candleGradient)" filter="url(#candleShadow)"/>
+        <!-- فتیله -->
+        <rect x="48" y="15" width="4" height="10" fill="#8B4513"/>
+        <!-- شعله -->
+        <path class="flame" d="M50 15 Q45 5 50 0 Q55 5 50 15" fill="#FFD700" opacity="0.9">
+          <animate attributeName="fill" values="#FFD700;#FF4500;#FFD700" dur="1s" repeatCount="indefinite"/>
+        </path>
+        <path class="flame" d="M50 12 Q42 2 50 -2 Q58 2 50 12" fill="#FFA500" opacity="0.7">
+          <animate attributeName="fill" values="#FFA500;#FF8C00;#FFA500" dur="0.8s" repeatCount="indefinite" begin="0.2s"/>
+        </path>
+        <!-- موم ذوب شده -->
+        <path d="M35 110 Q50 130 65 110" fill="#D2B48C" opacity="0.6"/>
+      </svg>
+    </div>
+  </div>
 
-    <!-- پاپ‌آپ ثابت -->
-    <div id="popup" class="popup">رمز درست است! حالا در پاکت را باز کنید.</div>
+  <!-- مودال -->
+  <div id="modal" class="modal page-transition">
+    <div class="modal-box">
+      <img id="modalImg" src="002.jpg" alt="تصویر معما">
+      <button id="nextBtn">صفحه بعد →</button>
+    </div>
+  </div>
 
-    <script>
-        const correctCode = "46530";
-        let enteredCode = "";
+  <!-- صفحه دوم -->
+  <div id="page2" class="story-page">
+    <h1>ادامه داستان</h1>
+    <p>و چند دقیقه بعد، پیشخدمت با تئودور کینگسلی، پزشکی جوان و آراسته بازگشت. با کمک یکدیگر در را گشودند و در همان لحظه، سرمای تندی به چهره‌شان خورد.</p>
+    <p>فیلیپ مور بی‌حرکت بر تخت دراز کشیده بود. ملحفه تا سینه‌اش بالا کشیده شده بود، و ردّ خون تمام ملحفه را در بر گرفته بود.</p>
+    <p>تئودور با شتاب نزدیک رفت و بدن را معاینه کرد. پوارو در سکوت کنار او ایستاده بود، نگاهی کوتاه به دکتر انداخت و پرسید: شما دکتر هستید، آقای کینگسلی؟</p>
+    <p>دکتر درحالی‌که پیراهن قربانی را باز می‌کرد، گفت: درست است، اما… شما از کجا اسم من رو میدونید؟</p>
+    <p>پوارو آرام در اتاق قدم می‌زد، نگاهی به گوشه‌ها انداخت و پاسخ داد: «لیست تمام مهمانان هتل رو مرور کردم، آقا. حالا لطفا به من بگین… چه بر سر فیلیپ مور آمده؟»</p>
+    <p>دکتر لحظه‌ای سکوت کرد، سپس سرش را بالا آورد: متأسفانه… اون با نه ضربه‌ی چاقو به قتل رسیده. زمان مرگ، بین ساعت دو تا سه و ربع بامداد بوده. بدون تجهیزات بیشتر، کار بیشتری از من برنمیاد.</p>
+    <p>پوارو به‌سوی میز کنار تخت رفت. چشمش به پیپ قهوه‌ای‌رنگی افتاد، در کنار آن دستمال گردن سبز و تکه‌ای کاغذ نیم‌سوخته. با نگاهی دقیق به آن‌ها، زیر لب زمزمه کرد: جالب شد… بسیار جالب.</p>
+    <p>سپس رو به دکتر و پیشخدمت گفت: هیچ‌چیز را لمس نکنید. فوراً رئیس هتل را خبر کنید.</p>
+  </div>
 
-        function press(num) {
-            if (enteredCode.length < 5) {
-                enteredCode += num;
-                updateDisplay();
-            }
-        }
+  <script>
+    const correct = "2031";
+    const input = document.getElementById("answerInput");
+    const btn = document.getElementById("submitBtn");
+    const feedback = document.getElementById("feedback");
+    const modal = document.getElementById("modal");
+    const next = document.getElementById("nextBtn");
+    const page1 = document.getElementById("page1");
+    const page2 = document.getElementById("page2");
 
-        function removeLast() {
-            enteredCode = enteredCode.slice(0, -1);
-            updateDisplay();
-        }
+    // تابع transition صفحات
+    function transitionPage(from, to) {
+      from.classList.add('fade-out');
+      setTimeout(() => {
+        from.style.display = 'none';
+        from.classList.remove('fade-out');
+        to.style.display = 'block';
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+        }, 100);
+      }, 600);
+    }
 
-        function clearCode() {
-            enteredCode = "";
-            updateDisplay();
-        }
+    btn.onclick = () => {
+      if (input.value === correct) {
+        feedback.style.display = "none";
+        modal.style.display = "flex";
+      } else {
+        feedback.innerText = "پاسخ اشتباه است!";
+        feedback.style.display = "block";
+      }
+    };
 
-        function updateDisplay() {
-            const digits = document.querySelectorAll('.digit');
-            digits.forEach((d, i) => d.textContent = enteredCode[i] || "");
-        }
+    next.onclick = () => {
+      modal.style.display = "none";
+      transitionPage(page1, page2);
+    };
 
-        function checkCode() {
-            const message = document.getElementById('message');
-            const lock = document.querySelector('.lock');
-            const box = document.getElementById('box');
-            const popup = document.getElementById('popup');
+    // بهبود ورودی
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        btn.click();
+      }
+    });
 
-            if (enteredCode === correctCode) {
-                message.textContent = 'رمز درست است ✅';
-                message.className = 'message success';
-                lock.classList.add('unlocked');
-                popup.classList.add('show');
-            } else {
-                message.textContent = 'رمز اشتباه است... دوباره تلاش کن';
-                message.className = 'message error';
-                box.classList.add('shake');
-                setTimeout(() => {
-                    box.classList.remove('shake');
-                    message.textContent = ''; // پاک کردن پیام
-                    message.className = 'message'; // بازگشت به کلاس اصلی
-                }, 5000); // 5000 میلی‌ثانیه = 5 ثانیه
-            }
-        }
-    </script>
+    // انیمیشن اولیه
+    window.addEventListener('load', () => {
+      document.body.style.opacity = '0';
+      document.body.style.transition = 'opacity 1.2s ease';
+      document.body.style.opacity = '1';
+    });
+  </script>
 </body>
 </html>
