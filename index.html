@@ -7,6 +7,7 @@
   <style>
     /* تم کلاسیک و نوستالژیک با وایب ویکتوریایی، نور شمع و سایه‌های گرم */
     @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i');
     
     :root {
       --primary-gold: #D4AF37;
@@ -77,14 +78,14 @@
       50% { opacity: 0.8; }
     }
 
-    /* صفحه فول‌اسکرین با فیلترهای کلاسیک - بهبود responsive برای background */
+    /* صفحه فول‌اسکرین با فیلترهای کلاسیک - رفع زوم عکس اول */
     .screen {
       position: fixed;
       inset: 0;
-      background-size: cover;
+      background-size: contain; /* تغییر به contain برای جلوگیری از زوم/کشیدگی */
       background-position: center;
       background-repeat: no-repeat;
-      background-attachment: scroll; /* جلوگیری از fixed در موبایل */
+      background-attachment: scroll;
       filter: sepia(0.3) contrast(1.05) brightness(0.9) saturate(0.8);
       animation: candleFlicker 4s infinite ease-in-out;
       z-index: 1;
@@ -97,6 +98,23 @@
       25% { filter: sepia(0.4) contrast(1.1) brightness(0.95) saturate(0.9); opacity: 0.98; }
       50% { filter: sepia(0.2) contrast(1) brightness(0.85) saturate(0.7); opacity: 0.99; }
       75% { filter: sepia(0.35) contrast(1.08) brightness(0.92) saturate(0.85); opacity: 0.97; }
+    }
+
+    /* خطوط کلاسیک تزئینی */
+    .classic-line {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--primary-gold), transparent);
+      z-index: 10;
+      opacity: 0.6;
+    }
+
+    .classic-line.bottom {
+      top: auto;
+      bottom: 0;
     }
 
     /* باکس مرکزی با استایل کلاسیک: قاب چوبی و نور شمع - بهبود positioning و sizing */
@@ -120,7 +138,7 @@
       max-width: clamp(300px, 85vw, 500px);
       width: 90vw;
       max-height: 70vh;
-      overflow-y: auto; /* جلوگیری از overflow در باکس */
+      overflow-y: auto;
       box-sizing: border-box;
       font-family: 'Playfair Display', serif;
     }
@@ -228,42 +246,150 @@
       75% { transform: translateX(6px); }
     }
 
-    /* شمع متحرک با گرافیک بالا (SVG انیمیت شده) - بهبود position در موبایل */
+    /* شمع واقع‌گرایانه با CSS */
     #candle-container {
       position: fixed;
       bottom: clamp(10px, 3vh, 20px);
       left: 50%;
       transform: translateX(-50%);
       z-index: 25;
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
-      pointer-events: none; /* جلوگیری از تداخل با touch */
+      width: clamp(80px, 15vw, 150px);
+      height: clamp(200px, 30vh, 400px);
+      margin: 0 auto;
+      pointer-events: none;
     }
 
-    #candle-svg {
-      width: clamp(40px, 8vw, 80px);
-      height: auto;
-      animation: candleSway 6s infinite ease-in-out;
+    #candle-container *,
+    #candle-container *:before,
+    #candle-container *:after {
+      position: absolute;
+      content: "";
     }
 
-    @keyframes candleSway {
-      0%, 100% { transform: rotate(-1deg); }
-      25% { transform: rotate(1deg); }
-      50% { transform: rotate(-0.5deg); }
-      75% { transform: rotate(0.5deg); }
+    .candle-holder {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .candle {
+      bottom: 0;
+      width: 100%;
+      height: 75%; /* تنظیم ارتفاع */
+      border-radius: 50% / 10%; /* تنظیم برای واقع‌گرایی */
+      box-shadow: inset 20px -30px 50px 0 rgba(0, 0, 0, 0.4), inset -20px 0 50px 0 rgba(0, 0, 0, 0.4);
+      background: #190f02;
+      background: linear-gradient(#e48825, #e78e0e, #833c03, #4c1a03 50%, #1c0900);
+    }
+
+    .candle:before {
+      width: 100%;
+      height: 10%;
+      border-radius: 50%;
+      border: 2px solid #d47401;
+      background: #b86409;
+      background: radial-gradient(#eaa121, #8e4901 45%, #b86409 80%);
+    }
+
+    .candle:after {
+      width: 20%;
+      height: 3%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      top: 5%;
+      box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5);
+      background: radial-gradient(rgba(0, 0, 0, 0.6), transparent 45%);
+    }
+
+    .thread {  
+      width: 4%;
+      height: 12%;
+      top: -5%;
+      left: 50%;
+      z-index: 1;
+      border-radius: 40% 40% 0 0;
+      transform: translateX(-50%);
+      background: #121212;
+      background: linear-gradient(#d6994a, #4b232c, #121212, black, #e8bb31 90%);
     }
 
     .flame {
-      animation: flameFlicker 0.5s infinite ease-in-out;
+      width: 16%;
+      height: 40%;
+      left: 50%;
+      transform-origin: 50% 100%;
+      transform: translateX(-50%);
+      bottom: 100%;
+      border-radius: 50% 50% 20% 20%;
+      background: rgba(255, 255, 255, 1);
+      background: linear-gradient(white 80%, transparent);
+      animation: moveFlame 6s linear infinite, enlargeFlame 5s linear infinite;
     }
 
-    @keyframes flameFlicker {
-      0%, 100% { transform: scale(1) rotate(-2deg); opacity: 1; }
-      25% { transform: scale(1.1) rotate(1deg); opacity: 0.9; }
-      50% { transform: scale(0.95) rotate(0deg); opacity: 1.1; }
-      75% { transform: scale(1.05) rotate(-1deg); opacity: 0.95; }
+    .flame:before {
+      width: 100%;
+      height: 100%;
+      border-radius: 50% 50% 20% 20%;
+      box-shadow: 0 0 15px 0 rgba(247, 93, 0, .4), 0 -6px 4px 0 rgba(247, 128, 0, .7);
     }
 
-    /* مودال با تم کلاسیک - بهبود img sizing و overflow */
+    @keyframes moveFlame {
+      0%, 100% {
+        transform: translateX(-50%) rotate(-2deg);
+      }
+      50% {
+        transform: translateX(-50%) rotate(2deg);
+      }
+    }
+
+    @keyframes enlargeFlame {
+      0%, 100% {
+        height: 40%;
+      }
+      50% {
+        height: 45%;
+      }
+    }
+
+    .glow {
+      width: 17%;
+      height: 20%;
+      border-radius: 50% 50% 35% 35%;
+      left: 50%;
+      top: -16%;
+      transform: translateX(-50%);
+      background: rgba(0, 133, 255, .7);
+      box-shadow: 0 -40px 30px 0 #dc8a0c, 0 40px 50px 0 #dc8a0c, inset 3px 0 2px 0 rgba(0, 133, 255, .6), inset -3px 0 2px 0 rgba(0, 133, 255, .6);
+    }
+
+    .glow:before {
+      width: 70%;
+      height: 60%;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 0;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .blinking-glow {
+      width: 60%;
+      height: 60%;
+      left: 50%;
+      top: -20%;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: #ff6000;
+      filter: blur(20px);
+      animation: blinkIt .1s infinite;
+    }
+
+    @keyframes blinkIt {
+      50% { opacity: .8;}
+    }
+
+    /* مودال با تم کلاسیک - زوم روی عکس و حذف کادر */
     .modal {
       position: fixed;
       inset: 0;
@@ -274,7 +400,7 @@
       align-items: center;
       z-index: 30;
       animation: fadeIn 0.6s ease-out;
-      overflow-y: auto; /* اجازه scroll در modal اگر لازم */
+      overflow-y: auto;
     }
 
     @keyframes fadeIn {
@@ -296,24 +422,35 @@
       overflow-y: auto;
       box-sizing: border-box;
       animation: warmGlow 4s infinite ease-in-out;
+      position: relative;
     }
 
     .modal-box img {
       width: 100%;
       max-width: 100%;
       height: auto;
-      max-height: 60vh; /* محدود کردن ارتفاع برای fit در موبایل */
-      object-fit: contain; /* حفظ aspect ratio */
-      border: 3px solid var(--primary-gold);
-      border-radius: 10px;
-      box-shadow: 0 0 30px var(--candle-glow);
+      max-height: 60vh;
+      object-fit: contain;
+      border: none; /* حذف کادر */
+      border-radius: 0; /* حذف گردی کادر */
+      box-shadow: none; /* حذف سایه کادر */
       transition: transform 0.4s ease;
       display: block;
       margin: 0 auto 20px;
+      cursor: zoom-in; /* نشانگر زوم */
+      touch-action: manipulation; /* بهبود touch در موبایل */
     }
 
-    .modal-box img:hover {
-      transform: scale(1.02);
+    .modal-box img.zoomed {
+      transform: scale(2); /* زوم 2x */
+      cursor: zoom-out;
+      z-index: 35;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(2);
+      max-width: none;
+      max-height: none;
     }
 
     .modal-box button {
@@ -353,7 +490,7 @@
       scroll-behavior: smooth;
       z-index: 15;
       font-family: 'Crimson Text', serif;
-      -webkit-overflow-scrolling: touch; /* smooth scroll در iOS */
+      -webkit-overflow-scrolling: touch;
     }
 
     .story-page h1 {
@@ -372,7 +509,7 @@
 
     @keyframes titleFade {
       from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      to { opacity: 1; translateY(0); }
     }
 
     .story-page p {
@@ -382,7 +519,7 @@
       animation-delay: calc(0.2s * var(--delay, 0));
       text-align: justify;
       padding: 0 5px;
-      hyphens: auto; /* شکستن کلمات در متن پارسی */
+      hyphens: auto;
     }
 
     .story-page p:nth-child(1) { --delay: 0; }
@@ -405,7 +542,7 @@
         padding: 15px 20px;
         margin: 5px;
         max-width: calc(100vw - 10px);
-        top: 45%; /* تنظیم برای جلوگیری از برش در بالای صفحه */
+        top: 45%;
         transform: translate(-50%, -45%);
       }
 
@@ -423,16 +560,16 @@
         max-height: 50vh;
       }
 
+      .modal-box img.zoomed {
+        transform: translate(-50%, -50%) scale(1.5); /* زوم کمتر در موبایل */
+      }
+
       #candle-container {
         bottom: 5px;
       }
 
-      #candle-svg {
-        width: clamp(30px, 10vw, 60px);
-      }
-
       .screen {
-        background-attachment: scroll; /* اطمینان از عدم fixed در موبایل */
+        background-size: contain; /* اطمینان از عدم زوم در موبایل */
       }
     }
 
@@ -498,6 +635,10 @@
     <div class="subtle-glitch"></div>
   </div>
 
+  <!-- خطوط کلاسیک -->
+  <div class="classic-line"></div>
+  <div class="classic-line bottom"></div>
+
   <!-- صفحه اول -->
   <div id="page1" class="page-transition">
     <div class="screen" id="bg1" style="background-image: url('001.jpg')"></div>
@@ -507,32 +648,16 @@
       <button id="submitBtn">تأیید</button>
       <div id="feedback" style="display: none;"></div>
     </div>
-    <!-- شمع متحرک -->
+    <!-- شمع واقع‌گرایانه -->
     <div id="candle-container">
-      <svg id="candle-svg" viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
-        <!-- بدنه شمع -->
-        <defs>
-          <linearGradient id="candleGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:#F5DEB3;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#D2B48C;stop-opacity:1" />
-          </linearGradient>
-          <filter id="candleShadow" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/>
-          </filter>
-        </defs>
-        <rect x="40" y="20" width="20" height="100" rx="10" fill="url(#candleGradient)" filter="url(#candleShadow)"/>
-        <!-- فتیله -->
-        <rect x="48" y="15" width="4" height="10" fill="#8B4513"/>
-        <!-- شعله -->
-        <path class="flame" d="M50 15 Q45 5 50 0 Q55 5 50 15" fill="#FFD700" opacity="0.9">
-          <animate attributeName="fill" values="#FFD700;#FF4500;#FFD700" dur="1s" repeatCount="indefinite"/>
-        </path>
-        <path class="flame" d="M50 12 Q42 2 50 -2 Q58 2 50 12" fill="#FFA500" opacity="0.7">
-          <animate attributeName="fill" values="#FFA500;#FF8C00;#FFA500" dur="0.8s" repeatCount="indefinite" begin="0.2s"/>
-        </path>
-        <!-- موم ذوب شده -->
-        <path d="M35 110 Q50 130 65 110" fill="#D2B48C" opacity="0.6"/>
-      </svg>
+      <div class="candle-holder">
+        <div class="candle">
+          <div class="blinking-glow"></div>
+          <div class="thread"></div>
+          <div class="glow"></div>
+          <div class="flame"></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -566,6 +691,12 @@
     const next = document.getElementById("nextBtn");
     const page1 = document.getElementById("page1");
     const page2 = document.getElementById("page2");
+    const modalImg = document.getElementById("modalImg");
+
+    // زوم روی عکس مودال
+    modalImg.addEventListener('click', () => {
+      modalImg.classList.toggle('zoomed');
+    });
 
     // تابع transition صفحات
     function transitionPage(from, to) {
@@ -592,6 +723,7 @@
 
     next.onclick = () => {
       modal.style.display = "none";
+      modalImg.classList.remove('zoomed'); // ریست زوم
       transitionPage(page1, page2);
     };
 
